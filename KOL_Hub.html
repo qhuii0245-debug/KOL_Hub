@@ -1,0 +1,2193 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KOL Hub — Keto Cake & CakeTella</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════ HOME SCREEN ══════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #F4F3EE;
+  min-height: 100vh;
+}
+
+#app-home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  background: #F4F3EE;
+}
+
+.home-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px;
+  color: #1A1A18;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.home-sub {
+  font-size: 13px;
+  color: #888780;
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.home-cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 700px;
+  width: 100%;
+}
+
+.home-card {
+  background: #fff;
+  border: 1.5px solid rgba(0,0,0,0.08);
+  border-radius: 18px;
+  padding: 32px 28px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+  min-width: 260px;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  text-align: left;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  position: relative;
+  overflow: hidden;
+}
+.home-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.home-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  border-color: rgba(0,0,0,0.14);
+}
+.home-card-icon {
+  font-size: 36px;
+  line-height: 1;
+}
+.home-card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1A1A18;
+  line-height: 1.2;
+}
+.home-card-desc {
+  font-size: 13px;
+  color: #6B6A65;
+  line-height: 1.6;
+}
+.home-card-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.home-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 99px;
+}
+.tag-green { background: #E1F5EE; color: #0F6E56; }
+.tag-amber { background: #FAEEDA; color: #854F0B; }
+.tag-blue  { background: #E6F1FB; color: #185FA5; }
+.tag-pink  { background: #FCE4EC; color: #AD1457; }
+
+.home-card-arrow {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  font-size: 18px;
+  color: #C9C8C3;
+  transition: all 0.2s;
+}
+.home-card:hover .home-card-arrow { color: #1A1A18; transform: translate(2px, -2px); }
+
+.home-footer {
+  margin-top: 48px;
+  font-size: 12px;
+  color: #A09F9B;
+  text-align: center;
+}
+
+/* Back button shared */
+.back-btn {
+  position: fixed;
+  top: 14px;
+  left: 16px;
+  z-index: 9999;
+  background: #fff;
+  border: 1.5px solid rgba(0,0,0,0.12);
+  border-radius: 99px;
+  padding: 6px 14px 6px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  color: #1A1A18;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: all 0.15s;
+}
+.back-btn:hover { background: #F4F3EE; transform: translateX(-2px); }
+
+/* ══════════ APP WRAPPERS ══════════ */
+#app-tracker { display: none; }
+#app-campaign { display: none; }
+
+/* Tracker needs body flex */
+#app-tracker { min-height: 100vh; }
+</style>
+
+<style id="tracker-styles">
+
+:root{
+  --green:#1D9E75;--green-l:#E1F5EE;--green-d:#0F6E56;
+  --amber:#EF9F27;--amber-l:#FAEEDA;--amber-d:#854F0B;
+  --blue:#378ADD;--blue-l:#E6F1FB;--blue-d:#185FA5;
+  --red:#E24B4A;--red-l:#FCEBEB;--red-d:#A32D2D;
+  --gray:#888780;--gray-l:#F1EFE8;--gray-d:#5F5E5A;
+  --bg:#F4F3EE;--surface:#fff;
+  --border:rgba(0,0,0,0.08);--border-md:rgba(0,0,0,0.13);
+  --text:#1A1A18;--muted:#6B6A65;--faint:#A09F9B;
+  --r:12px;--rs:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+/* body flex handled by wrapper */
+
+/* SIDEBAR */
+.sidebar{width:220px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border-md);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;overflow:hidden;z-index:10;transition:width .2s ease,opacity .2s ease;}
+.sidebar.collapsed{width:0 !important;opacity:0;pointer-events:none;border-right:none;}
+.sb-toggle{position:fixed;top:50%;left:228px;transform:translateY(-50%);z-index:20;width:20px;height:36px;background:var(--surface);border:1px solid var(--border-md);border-radius:0 6px 6px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);box-shadow:2px 0 6px rgba(0,0,0,0.08);transition:left .2s ease;}
+.sb-toggle:hover{background:var(--green-l);color:var(--green-d);}
+.sb-toggle.collapsed{left:0;}
+.sb-top{padding:16px 16px 12px;border-bottom:1px solid var(--border);}
+.app-title{font-size:15px;font-weight:600;color:var(--text);}
+.app-sub{font-size:11px;color:var(--faint);margin-top:1px;}
+.brand-chips{display:flex;gap:5px;margin-top:9px;}
+.chip{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:99px;}
+.chip-k{background:var(--green-l);color:var(--green-d);}
+.chip-c{background:var(--amber-l);color:var(--amber-d);}
+
+.nav-section{border-bottom:1px solid var(--border);}
+.nav-item{display:flex;align-items:center;gap:9px;padding:10px 16px;cursor:pointer;border-left:3px solid transparent;transition:all .12s;font-size:13px;font-weight:500;color:var(--muted);}
+.nav-item:hover{background:var(--bg);color:var(--text);}
+.nav-item.active{background:var(--green-l);border-left-color:var(--green);color:var(--green-d);}
+.nav-icon{font-size:14px;width:18px;text-align:center;}
+
+.month-section{border-bottom:1px solid var(--border);overflow-y:auto;max-height:230px;}
+.sb-row{display:flex;align-items:center;justify-content:space-between;padding:9px 16px 5px;}
+.sb-lbl{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);}
+.icon-btn{font-size:18px;color:var(--muted);background:none;border:none;cursor:pointer;line-height:1;padding:0 2px;transition:color .12s;}
+.icon-btn:hover{color:var(--text);}
+.month-item{display:flex;align-items:center;padding:8px 16px;cursor:pointer;border-left:3px solid transparent;transition:all .12s;gap:7px;}
+.month-item:hover{background:var(--bg);}
+.month-item.active{background:var(--green-l);border-left-color:var(--green);}
+.month-name{font-size:13px;font-weight:500;color:var(--text);flex:1;}
+.month-item.active .month-name{color:var(--green-d);}
+.month-cnt{font-size:11px;color:var(--faint);font-family:'DM Mono',monospace;}
+.xbtn{width:18px;height:18px;border-radius:4px;border:none;background:transparent;color:var(--faint);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .12s;flex-shrink:0;}
+.month-item:hover .xbtn,.inf-item:hover .xbtn{opacity:1;}
+.xbtn:hover{background:var(--red-l);color:var(--red);}
+
+.inf-section{display:flex;flex-direction:column;flex:1;overflow:hidden;}
+.inf-hdr{padding:9px 16px 5px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.add-btn{font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif;padding:4px 11px;border-radius:var(--rs);background:var(--text);color:#fff;border:none;cursor:pointer;transition:opacity .15s;}
+.add-btn:hover{opacity:.82;}
+.add-btn:disabled{opacity:.28;cursor:not-allowed;}
+.search-wrap{padding:0 11px 7px;flex-shrink:0;}
+.search-in{width:100%;padding:7px 11px;font-size:13px;border:1px solid var(--border-md);border-radius:var(--rs);background:var(--bg);color:var(--text);outline:none;font-family:'DM Sans',sans-serif;}
+.search-in:focus{border-color:var(--green);}
+.search-in::placeholder{color:var(--faint);}
+.inf-list{flex:1;overflow-y:auto;}
+.inf-item{display:flex;align-items:center;gap:9px;padding:9px 14px;cursor:pointer;border-left:3px solid transparent;border-bottom:1px solid var(--border);transition:all .12s;}
+.inf-item:hover{background:var(--bg);}
+.inf-item.active{background:var(--green-l);border-left-color:var(--green);}
+.inf-av{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;background:var(--gray-l);color:var(--gray-d);}
+.inf-item.active .inf-av{background:var(--green);color:#fff;}
+.inf-meta{flex:1;min-width:0;}
+.inf-nm{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.inf-item.active .inf-nm{color:var(--green-d);}
+.inf-sub{display:flex;align-items:center;gap:4px;margin-top:2px;}
+.sdot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.sdot-Off{background:var(--gray);}
+.sdot-Replying{background:var(--blue);}
+.sdot-Pending{background:var(--amber);}
+.sdot-Done{background:var(--green);}
+.inf-pr{font-size:11px;color:var(--faint);font-family:'DM Mono',monospace;}
+.sb-footer{padding:9px 16px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);flex-shrink:0;}
+.sb-footer span{font-weight:600;color:var(--text);font-family:'DM Mono',monospace;}
+
+/* MAIN */
+.main{margin-left:220px;flex:1;padding:26px 26px 60px;min-height:100vh;transition:margin-left .2s ease;}
+.main.expanded{margin-left:0;}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;text-align:center;gap:9px;}
+.empty-icon{font-size:42px;margin-bottom:4px;}
+.empty-title{font-size:18px;font-weight:600;}
+.empty-sub{font-size:14px;color:var(--muted);max-width:270px;line-height:1.6;}
+.empty-cta{margin-top:8px;padding:10px 22px;background:var(--text);color:#fff;border:none;border-radius:var(--rs);font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.empty-cta:hover{opacity:.85;}
+
+/* OVERVIEW stats */
+.page-title{font-size:20px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.page-sub{font-size:13px;color:var(--muted);margin-bottom:20px;}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;}
+.stat-num{font-size:24px;font-weight:600;font-family:'DM Mono',monospace;color:var(--text);}
+.stat-lbl{font-size:12px;color:var(--muted);margin-top:3px;}
+.stat-card.green .stat-num{color:var(--green);}
+.stat-card.amber .stat-num{color:var(--amber-d);}
+.stat-card.blue .stat-num{color:var(--blue-d);}
+
+/* Overview list */
+.ov-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;}
+.ov-head{padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--border);}
+.ov-title{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);}
+.ov-row{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;}
+.ov-row:last-child{border-bottom:none;}
+.ov-row:hover{background:var(--bg);}
+.ov-av{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;background:var(--gray-l);color:var(--gray-d);}
+.ov-info{flex:1;min-width:0;}
+.ov-name{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ov-detail{font-size:12px;color:var(--muted);margin-top:2px;}
+.ov-right{display:flex;align-items:center;gap:7px;flex-shrink:0;}
+.sp{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px;}
+.sp-Off{background:var(--gray-l);color:var(--gray-d);}
+.sp-Replying{background:var(--blue-l);color:var(--blue-d);}
+.sp-Pending{background:var(--amber-l);color:var(--amber-d);}
+.sp-Done{background:var(--green-l);color:var(--green-d);}
+.ov-mono{font-size:12px;font-weight:600;font-family:'DM Mono',monospace;color:var(--text);}
+.ov-faint{font-size:11px;color:var(--faint);font-family:'DM Mono',monospace;}
+
+/* DETAIL */
+.detail-view{animation:fadeIn .18s ease;max-width:600px;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+.month-badge{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:var(--green-l);color:var(--green-d);display:inline-block;margin-bottom:10px;}
+.d-name{font-size:22px;font-weight:600;color:var(--text);}
+.d-handle{font-size:13px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:2px;min-height:18px;}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:12px;overflow:hidden;}
+.card-head{padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--border);}
+.card-title{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+.card-body{padding:14px 16px;display:flex;flex-direction:column;gap:12px;}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.fc{background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);padding:10px 13px;transition:border-color .15s;}
+.fc:focus-within{border-color:var(--green);}
+.fc.amber:focus-within{border-color:var(--amber);}
+.fl{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);margin-bottom:4px;}
+.fi{width:100%;font-size:14px;color:var(--text);background:transparent;border:none;outline:none;font-family:'DM Sans',sans-serif;}
+.fi::placeholder{color:var(--faint);}
+.fi-big{font-size:20px;font-weight:600;font-family:'DM Mono',monospace;}
+.fi-big::placeholder{font-weight:400;font-size:16px;color:var(--faint);}
+.fi-sub{font-size:12px;color:var(--muted);margin-top:3px;}
+
+/* Status */
+.st-row{display:flex;gap:7px;flex-wrap:wrap;}
+.st-btn{flex:1;min-width:80px;font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;padding:10px 6px;border-radius:var(--rs);border:1.5px solid var(--border-md);background:var(--surface);color:var(--muted);cursor:pointer;transition:all .13s;text-align:center;}
+.st-btn:hover{color:var(--text);border-color:var(--gray);}
+.st-btn.sel-Off{background:var(--gray-l);color:var(--gray-d);border-color:var(--gray);}
+.st-btn.sel-Replying{background:var(--blue-l);color:var(--blue-d);border-color:var(--blue);}
+.st-btn.sel-Pending{background:var(--amber-l);color:var(--amber-d);border-color:var(--amber);}
+.st-btn.sel-Done{background:var(--green-l);color:var(--green-d);border-color:var(--green);}
+
+/* Product tags */
+.product-wrap{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:4px;}
+.prod-tag{display:flex;align-items:center;gap:5px;font-size:13px;background:var(--green-l);color:var(--green-d);padding:5px 10px;border-radius:99px;font-weight:500;}
+.prod-tag button{background:none;border:none;cursor:pointer;color:var(--green-d);font-size:14px;line-height:1;padding:0;opacity:.6;}
+.prod-tag button:hover{opacity:1;}
+.prod-add{display:flex;gap:8px;align-items:center;}
+.prod-input{flex:1;font-size:13px;padding:8px 12px;border:1px solid var(--border-md);border-radius:var(--rs);background:var(--surface);color:var(--text);outline:none;font-family:'DM Sans',sans-serif;}
+.prod-input:focus{border-color:var(--green);}
+.prod-input::placeholder{color:var(--faint);}
+.prod-btn{font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;padding:8px 14px;border-radius:var(--rs);background:var(--green);color:#fff;border:none;cursor:pointer;white-space:nowrap;}
+.prod-btn:hover{opacity:.88;}
+
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:100;display:flex;align-items:center;justify-content:center;}
+.modal{background:var(--surface);border-radius:var(--r);padding:22px;width:310px;}
+.modal-title{font-size:15px;font-weight:600;margin-bottom:3px;}
+.modal-sub{font-size:12px;color:var(--muted);margin-bottom:14px;}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:13px;}
+.mpick{padding:9px;border-radius:var(--rs);border:1px solid var(--border-md);background:var(--bg);color:var(--text);font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .12s;text-align:center;}
+.mpick:hover{background:var(--green-l);border-color:var(--green);color:var(--green-d);}
+.mpick.used{opacity:.3;cursor:not-allowed;pointer-events:none;}
+.modal-cancel{width:100%;padding:9px;border-radius:var(--rs);border:1px solid var(--border-md);background:transparent;color:var(--muted);font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.modal-cancel:hover{background:var(--bg);}
+
+/* Cross-month search */
+.cross-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:12px;overflow:hidden;}
+.cross-head{padding:12px 16px;border-bottom:1px solid var(--border);}
+.cross-name{font-size:15px;font-weight:600;color:var(--text);}
+.cross-handle{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:1px;}
+.cross-row{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;}
+.cross-row:last-child{border-bottom:none;}
+.cross-row:hover{background:var(--bg);}
+.cross-mbadge{font-size:11px;font-weight:600;padding:2px 9px;border-radius:99px;background:var(--green-l);color:var(--green-d);flex-shrink:0;}
+.cross-info{flex:1;font-size:13px;color:var(--muted);}
+.cross-go{font-size:13px;color:var(--green);opacity:0;transition:opacity .12s;}
+.cross-row:hover .cross-go{opacity:1;}
+
+/* BRAND FILTER TABS in sidebar */
+.brand-filter{display:flex;gap:0;padding:8px 12px 0;border-bottom:1px solid var(--border);flex-shrink:0;}
+.bf-tab{flex:1;font-size:11px;font-weight:600;font-family:'DM Sans',sans-serif;padding:5px 4px;border:none;background:none;cursor:pointer;color:var(--faint);border-bottom:2px solid transparent;transition:all .12s;text-align:center;letter-spacing:.02em;}
+.bf-tab:hover{color:var(--text);}
+.bf-tab.bf-all.active{color:var(--text);border-bottom-color:var(--text);}
+.bf-tab.bf-keto.active{color:var(--green-d);border-bottom-color:var(--green);}
+.bf-tab.bf-cake.active{color:var(--amber-d);border-bottom-color:var(--amber);}
+
+</style>
+
+<style id="campaign-styles">
+
+  :root {
+    /* Keto Cake — olive green */
+    --keto-dark:   #2D6A4F;
+    --keto-mid:    #52B788;
+    --keto-light:  #D8F3DC;
+    --keto-pale:   #F0FAF4;
+    --keto-accent: #1B4332;
+    /* CakeTella — rose pink */
+    --cake-dark:   #AD1457;
+    --cake-mid:    #E91E8C;
+    --cake-light:  #FCE4EC;
+    --cake-pale:   #FFF5F9;
+    --cake-accent: #6A0F35;
+    /* Neutral */
+    --bg:     #F7F5F2;
+    --white:  #FFFFFF;
+    --dark:   #1C1C2E;
+    --mid:    #555570;
+    --light:  #9999BB;
+    --border: #E8E6F0;
+    --radius: 14px;
+    --shadow: 0 2px 16px rgba(0,0,0,0.06);
+    --shadow-hover: 0 6px 32px rgba(0,0,0,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* body style handled by wrapper */
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--white);
+    border-bottom: 2px solid var(--border);
+    padding: 0 24px;
+    position: sticky; top: 0; z-index: 200;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+  .header-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; gap: 0;
+    height: 56px;
+  }
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px; color: var(--dark);
+    margin-right: 32px; white-space: nowrap; flex-shrink: 0;
+  }
+  .brand-tabs {
+    display: flex; gap: 0; height: 100%;
+  }
+  .brand-tab {
+    display: flex; align-items: center; gap: 8px;
+    padding: 0 24px;
+    border: none; background: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 500;
+    color: var(--light);
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .brand-tab:hover { color: var(--mid); }
+  .brand-tab.active-keto  { color: var(--keto-dark); border-bottom-color: var(--keto-mid); font-weight: 600; }
+  .brand-tab.active-cake  { color: var(--cake-dark); border-bottom-color: var(--cake-mid); font-weight: 600; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-keto { background: var(--keto-mid); }
+  .dot-cake { background: var(--cake-mid); }
+
+  /* ── EDIT MODE BANNER ── */
+  .edit-banner {
+    background: #FFF8E1;
+    border-bottom: 1px solid #FFD54F;
+    padding: 8px 24px;
+    text-align: center;
+    font-size: 12px; color: #7B5800;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .edit-toggle {
+    background: #F57F17; color: white;
+    border: none; border-radius: 6px;
+    padding: 4px 12px; font-size: 12px; font-weight: 600;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+  }
+  .edit-toggle:hover { background: #E65100; }
+  .edit-toggle.on { background: var(--keto-dark); }
+
+  /* ── LAYOUT ── */
+  .page { display: none; }
+  .page.active { display: block; animation: fadeUp 0.3s ease; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── SECTION NAV (inner tabs) ── */
+  .sec-nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    display: flex;
+  }
+  .sec-nav::-webkit-scrollbar { height: 3px; }
+  .sec-nav::-webkit-scrollbar-thumb { border-radius: 2px; }
+  .sec-nav.keto-nav::-webkit-scrollbar-thumb { background: var(--keto-mid); }
+  .sec-nav.cake-nav::-webkit-scrollbar-thumb { background: var(--cake-mid); }
+  .sec-btn {
+    padding: 12px 20px;
+    border: none; background: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500;
+    color: var(--light);
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.18s;
+  }
+  .keto-page .sec-btn:hover  { color: var(--keto-dark); background: var(--keto-pale); }
+  .keto-page .sec-btn.active { color: var(--keto-dark); border-bottom-color: var(--keto-mid); font-weight: 600; }
+  .cake-page .sec-btn:hover  { color: var(--cake-dark); background: var(--cake-pale); }
+  .cake-page .sec-btn.active { color: var(--cake-dark); border-bottom-color: var(--cake-mid); font-weight: 600; }
+
+  /* ── MAIN ── */
+  .main { max-width: 1100px; margin: 0 auto; padding: 28px 20px 60px; }
+
+  .section-panel { display: none; }
+  .section-panel.active { display: block; animation: fadeUp 0.25s ease; }
+
+  /* ── CARDS GRID ── */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; }
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow);
+    border: 1.5px solid var(--border);
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+  .card.keto-card { border-color: #B7DFC8; }
+  .card.cake-card { border-color: #F4A7C3; }
+
+  .card-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 16px; padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-icon {
+    width: 34px; height: 34px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; flex-shrink: 0;
+  }
+  .keto-icon { background: var(--keto-light); }
+  .cake-icon { background: var(--cake-light); }
+  .card-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; }
+  .keto-label { color: var(--keto-dark); }
+  .cake-label { color: var(--cake-dark); }
+  .card-title { font-weight: 600; font-size: 14px; color: var(--dark); margin-top: 2px; }
+
+  /* ── BUBBLE ── */
+  .script { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+  .bubble {
+    border-radius: 12px 12px 12px 3px;
+    padding: 9px 13px;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--dark);
+    border-left: 3px solid transparent;
+    outline: none;
+    transition: background 0.15s;
+    white-space: pre-wrap;
+  }
+  .bubble:not([contenteditable="true"]) { background: #F7F7FC; border-left-color: #DDDDF0; }
+  .bubble.keto-hl  { background: var(--keto-light); border-left-color: var(--keto-mid); }
+  .bubble.cake-hl  { background: var(--cake-light); border-left-color: var(--cake-mid); }
+  .bubble.warning  { background: #FFF8E1; border-left-color: #FFC107; color: #7B5800; }
+  /* edit mode */
+  body.edit-on .bubble[contenteditable="true"] {
+    border: 1.5px dashed #CCC;
+    border-radius: 10px;
+    padding: 8px 12px;
+    background: #FAFAFA;
+    cursor: text;
+  }
+  body.edit-on .bubble[contenteditable="true"]:focus {
+    border-color: #9999CC;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(150,150,200,0.12);
+  }
+  body.edit-on.keto-active .bubble.keto-hl[contenteditable="true"]:focus { border-color: var(--keto-mid); box-shadow: 0 0 0 3px rgba(82,183,136,0.15); }
+  body.edit-on.cake-active .bubble.cake-hl[contenteditable="true"]:focus { border-color: var(--cake-mid); box-shadow: 0 0 0 3px rgba(233,30,140,0.12); }
+
+  /* ── BUTTONS ── */
+  .copy-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: none; border: 1.5px solid var(--border);
+    border-radius: 8px; padding: 6px 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; font-weight: 500; color: var(--light);
+    cursor: pointer; transition: all 0.18s;
+  }
+  .keto-page .copy-btn:hover { border-color: var(--keto-mid); color: var(--keto-dark); background: var(--keto-pale); }
+  .cake-page .copy-btn:hover { border-color: var(--cake-mid); color: var(--cake-dark); background: var(--cake-pale); }
+  .copy-btn.copied { border-color: #66BB6A; color: #2E7D32; background: #F1F8E9; }
+
+  /* ── TIPS BOX ── */
+  .tips-box {
+    background: #FFFDE7; border: 1.5px solid #FFE082;
+    border-radius: 11px; padding: 14px 16px; margin-top: 18px;
+  }
+  .tips-title { font-weight: 700; font-size: 12px; color: #F57F17; margin-bottom: 7px; }
+  .tips-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .tips-list li { font-size: 12.5px; color: var(--mid); display: flex; gap: 7px; line-height: 1.5; }
+  .tips-list li::before { content: '💡'; flex-shrink: 0; }
+
+  /* ── DELIVERY FORM ── */
+  .delivery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media(max-width:620px) { .delivery-grid { grid-template-columns: 1fr; } }
+
+  .form-badge {
+    display: inline-block; padding: 3px 10px;
+    border-radius: 100px; font-size: 10px; font-weight: 700;
+    letter-spacing: 0.5px; margin-bottom: 14px;
+  }
+  .badge-foc     { background: var(--keto-mid); color: white; }
+  .badge-payment { background: #F57C00; color: white; }
+  .badge-foc-cake { background: var(--cake-mid); color: white; }
+
+  .form-rows { display: flex; flex-direction: column; gap: 0; }
+  .form-row {
+    display: flex; align-items: flex-start;
+    border-bottom: 1px solid #F0F0F8;
+    padding: 9px 0;
+    gap: 8px;
+  }
+  .form-row:last-child { border-bottom: none; }
+  .form-key {
+    font-size: 12.5px; font-weight: 600; color: var(--mid);
+    min-width: 130px; padding-top: 1px; flex-shrink: 0;
+  }
+  .form-val {
+    font-size: 12.5px; color: #AAABB8; font-style: italic; flex: 1;
+    outline: none; white-space: pre-wrap;
+  }
+  body.edit-on .form-val[contenteditable="true"] {
+    color: var(--dark); font-style: normal;
+    border-bottom: 1px dashed #CCC; padding-bottom: 1px;
+  }
+  body.edit-on .form-val[contenteditable="true"]:focus {
+    border-bottom-color: #9999CC; color: var(--dark);
+  }
+
+  /* ── SLOTS ── */
+  .slots-label { font-size: 12px; font-weight: 600; color: var(--mid); margin: 14px 0 6px; }
+  .slots-sub   { font-size: 11px; color: var(--light); margin-bottom: 8px; }
+  .slots { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .slot {
+    background: #F7F7FC; border: 1.5px solid var(--border);
+    border-radius: 8px; padding: 7px 10px;
+    font-size: 12px; font-weight: 500;
+    text-align: center; color: var(--mid);
+  }
+  .slot.keto-slot { background: var(--keto-pale); border-color: #B7DFC8; color: var(--keto-dark); }
+  .slot.cake-slot { background: var(--cake-pale); border-color: #F4A7C3; color: var(--cake-dark); }
+
+  /* ── SECTION TITLE ── */
+  .sec-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px; color: var(--dark);
+    margin-bottom: 18px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sec-sub { font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--light); font-weight: 400; }
+
+  .divider { height: 1px; background: linear-gradient(to right, transparent, var(--border), transparent); margin: 24px 0; }
+
+  @media(max-width:640px) { .cards { grid-template-columns: 1fr; } }
+  
+</style>
+
+</head>
+<body>
+
+<!-- ══════════ HOME ══════════ -->
+<div id="app-home">
+  <div class="home-logo">🎂 KOL Hub</div>
+  <div class="home-sub">Keto Cake &amp; CakeTella · 选择你要使用的工具</div>
+  
+  <div class="home-cards">
+    <div class="home-card" onclick="openApp('tracker')">
+      <div class="home-card-icon">📊</div>
+      <div class="home-card-title">Influencer Tracker</div>
+      <div class="home-card-desc">追踪 KOL 合作进度、delivery 安排、费用和状态管理</div>
+      <div class="home-card-tags">
+        <span class="home-tag tag-green">Keto Cake</span>
+        <span class="home-tag tag-amber">CakeTella</span>
+        <span class="home-tag tag-blue">XHS / IG</span>
+      </div>
+      <div class="home-card-arrow">↗</div>
+    </div>
+    
+    <div class="home-card" onclick="openApp('campaign')">
+      <div class="home-card-icon">📩</div>
+      <div class="home-card-title">话术手册</div>
+      <div class="home-card-desc">找 Influencer 私信话术、跟进、合作确认和 delivery 安排表</div>
+      <div class="home-card-tags">
+        <span class="home-tag tag-green">Keto Cake</span>
+        <span class="home-tag tag-pink">CakeTella</span>
+        <span class="home-tag tag-blue">可编辑 · Firebase</span>
+      </div>
+      <div class="home-card-arrow">↗</div>
+    </div>
+  </div>
+  
+  <div class="home-footer">Keto Cake &amp; CakeTella · KOL Campaign Hub 2025</div>
+</div>
+
+<!-- ══════════ BACK BUTTON (shown when in an app) ══════════ -->
+<button class="back-btn" id="back-btn" style="display:none" onclick="goHome()">← 返回</button>
+
+<!-- ══════════ APP: TRACKER ══════════ -->
+<div id="app-tracker">
+<button class="sb-toggle" id="sb-toggle" onclick="toggleSidebar()" title="收起/展开侧边栏">◀</button>
+<div id="tracker-sync-bar" style="display:none;position:fixed;bottom:16px;right:16px;z-index:9999;padding:10px 18px;border-radius:99px;font-size:13px;font-weight:600;font-family:DM Sans,sans-serif;box-shadow:0 2px 12px rgba(0,0,0,0.15);transition:all 0.3s;align-items:center;gap:6px;"></div>
+  <!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sb-top">
+    <div class="app-title">Influencer Tracker</div>
+    <div class="app-sub">Keto Cake &amp; CakeTella · XHS / IG</div>
+    <div class="brand-chips"><span class="chip chip-k">Keto Cake</span><span class="chip chip-c">CakeTella</span></div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-item active" id="nav-overview" onclick="showOverview()"><span class="nav-icon">📊</span>Overview</div>
+    <div class="nav-item" id="nav-search" onclick="showSearch()"><span class="nav-icon">🔍</span>Find influencer</div>
+  </div>
+
+  <!-- Brand filter tabs -->
+  <div class="brand-filter">
+    <button class="bf-tab bf-all active" id="bf-all" onclick="setBrandFilter('all')">All</button>
+    <button class="bf-tab bf-keto" id="bf-keto" onclick="setBrandFilter('Keto Cake')">🌿 Keto</button>
+    <button class="bf-tab bf-cake" id="bf-cake" onclick="setBrandFilter('CakeTella')">🎂 Cake</button>
+  </div>
+
+  <div class="month-section">
+    <div class="sb-row"><span class="sb-lbl">Months</span><button class="icon-btn" onclick="showModal()">＋</button></div>
+    <div id="month-list"></div>
+  </div>
+
+  <div class="inf-section">
+    <div class="inf-hdr">
+      <span class="sb-lbl" id="inf-lbl">Influencers</span>
+      <button class="add-btn" id="add-btn" onclick="addInf()" disabled>+ Add</button>
+    </div>
+    <div class="search-wrap">
+      <input class="search-in" id="search-box" placeholder="Search name..." oninput="renderInfList(this.value)">
+    </div>
+    <div class="inf-list" id="inf-list"></div>
+    <div class="sb-footer" id="sb-footer">Select a month to start</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="main">
+  <div class="empty-state" id="empty-state">
+    <div class="empty-icon">📅</div>
+    <div class="empty-title">Start with a month</div>
+    <div class="empty-sub">Click ＋ next to "Months" to add your first month, then add influencers inside.</div>
+  </div>
+  <div id="content-area" style="display:none;"></div>
+</div>
+
+<!-- Month modal -->
+<div class="modal-bg" id="modal" style="display:none;" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal">
+    <div class="modal-title">Add month</div>
+    <div class="modal-sub">Pick the month you started finding influencers</div>
+    <div class="modal-grid" id="modal-grid"></div>
+    <button class="modal-cancel" onclick="document.getElementById('modal').style.display='none'">Cancel</button>
+  </div>
+</div>
+</div>
+
+<!-- ══════════ APP: CAMPAIGN ══════════ -->
+<div id="app-campaign">
+  <!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="logo" data-sync="logo_1">🎂 话术手册</div>
+    <div class="brand-tabs">
+      <button class="brand-tab active-keto" id="tab-keto" onclick="switchBrand('keto')">
+        <span class="dot dot-keto"></span> Keto Cake
+      </button>
+      <button class="brand-tab" id="tab-cake" onclick="switchBrand('cake')">
+        <span class="dot dot-cake"></span> CakeTella
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- SYNC STATUS BAR -->
+<div id="sync-bar" style="display:none;position:fixed;bottom:16px;right:16px;z-index:999;padding:10px 18px;border-radius:99px;font-size:13px;font-weight:600;font-family:DM Sans,sans-serif;box-shadow:0 2px 12px rgba(0,0,0,0.15);transition:all 0.3s;"></div>
+
+<!-- EDIT BANNER -->
+<div class="edit-banner">
+  <span>✏️ 开启编辑模式 — 标题、话术、表格全部可以改</span>
+  <button class="edit-toggle" id="editBtn" onclick="toggleEdit()">开启编辑</button>
+  <span id="editHint" style="display:none;color:#2E7D32">✅ 点击任何文字（标题、话术、表格）直接修改</span>
+</div>
+
+<!-- ══════════ KETO CAKE PAGE ══════════ -->
+<div id="keto-page" class="page keto-page active">
+  <div class="sec-nav keto-nav">
+    <button class="sec-btn active" onclick="showSection('keto','dm')">📩 第一次私信</button>
+    <button class="sec-btn" onclick="showSection('keto','followup')">🔁 跟进话术</button>
+    <button class="sec-btn" onclick="showSection('keto','confirm')">🤝 谈合作 & 确认</button>
+    <button class="sec-btn" onclick="showSection('keto','delivery')">📦 收货跟进</button>
+    <button class="sec-btn" onclick="showSection('keto','arrange')">📋 Delivery 安排表</button>
+  </div>
+  <div class="main">
+
+    <!-- DM -->
+    <div id="keto-dm" class="section-panel active">
+      <div class="sec-title" data-sync="sec_title_1">📩 第一次私信 <span class="sec-sub">First DM</span></div>
+      <div class="cards">
+
+        <div class="card keto-card">
+          <div class="card-header">
+            <div class="card-icon keto-icon">🌿</div>
+            <div><div class="card-label keto-label" data-sync="card_label_1">版本 A</div><div class="card-title" data-sync="card_title_1">小红书 — 基础版（5k–30k粉）</div></div>
+          </div>
+          <div class="script" id="keto-dm-a">
+            <div class="bubble" data-sync="bubble_1"contenteditable="false">你好呀～我是XX来自Keto Cake 😊</div>
+            <div class="bubble" data-sync="bubble_2"contenteditable="false">Keto Cake 是一家专做无糖无面粉蛋糕的品牌，适合糖尿病、keto 饮食、或者想减糖的朋友～</div>
+            <div class="bubble keto-hl" data-sync="bubble_3"contenteditable="false">我们正找着博主做推广以互惠的方式～
+我在小红书上看到你的贴文很不错 ✨
+想请问你有兴趣与我们合作吗？</div>
+            <div class="bubble" data-sync="bubble_4"contenteditable="false">合作方式：我们会附送delivery蛋糕给你拍摄
+你会以顾客的角度拍摄以及在小红书上分享</div>
+            <div class="bubble" data-sync="bubble_5"contenteditable="false">期待收到你的回复 谢谢🥰</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('keto-dm-a',this)">📋 复制话术</button>
+        </div>
+
+        <div class="card keto-card">
+          <div class="card-header">
+            <div class="card-icon keto-icon">💚</div>
+            <div><div class="card-label keto-label" data-sync="card_label_2">版本 B</div><div class="card-title" data-sync="card_title_2">小红书 — 夸赞型（30k+ 粉）</div></div>
+          </div>
+          <div class="script" id="keto-dm-b">
+            <div class="bubble" data-sync="bubble_6"contenteditable="false">你好，我是XX来自Keto Cake</div>
+            <div class="bubble keto-hl" data-sync="bubble_7"contenteditable="false">目前我们正在找xhs food blogger / 小红书博主
+以互惠的方式来推广～
+我们在xhs上看到你的贴文都很不错，
+想请问看你有没有兴趣和我们一起合作呀？ ❤️🥰</div>
+            <div class="bubble" data-sync="bubble_8"contenteditable="false">期待收到你的回复 谢谢🥰</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('keto-dm-b',this)">📋 复制话术</button>
+        </div>
+
+        <div class="card keto-card">
+          <div class="card-header">
+            <div class="card-icon keto-icon">📍</div>
+            <div><div class="card-label keto-label" data-sync="card_label_3">版本 C</div><div class="card-title" data-sync="card_title_3">雪隆博主特版</div></div>
+          </div>
+          <div class="script" id="keto-dm-c">
+            <div class="bubble" data-sync="bubble_9"contenteditable="false">你好，我是XX来自Keto Cake</div>
+            <div class="bubble keto-hl" data-sync="bubble_10"contenteditable="false">请问你是雪隆区博主吗？我们看了你分享的贴文很喜欢你的风格，
+不知道你有没有兴趣和我们一起合作呢？
+如果有兴趣的话方便给我们你的WS 📲更多详情了解吗？</div>
+            <div class="bubble" data-sync="bubble_11"contenteditable="false">期待收到你的回复 谢谢🥰</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('keto-dm-c',this)">📋 复制话术</button>
+        </div>
+
+      </div>
+      <div class="tips-box">
+        <div class="tips-title">⚠️ 注意事项</div>
+        <ul class="tips-list">
+          <li>保持轻松口气，字数控制在 100 字以内</li>
+          <li>记得把 "XX" 换成自己的名字</li>
+          <li>不要一开始就问 rate 或谈费用</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FOLLOW UP -->
+    <div id="keto-followup" class="section-panel">
+      <div class="sec-title" data-sync="sec_title_2">🔁 跟进话术 <span class="sec-sub">Follow Up</span></div>
+      <div class="cards">
+
+        <div class="card keto-card">
+          <div class="card-header">
+            <div class="card-icon keto-icon">📅</div>
+            <div><div class="card-label keto-label" data-sync="card_label_4">跟进 A</div><div class="card-title" data-sync="card_title_4">3–5 天后跟进（基础版）</div></div>
+          </div>
+          <div class="script" id="keto-fu-a">
+            <div class="bubble" data-sync="bubble_12"contenteditable="false">嗨～不知道你上次有没有看到我的消息 😅</div>
+            <div class="bubble keto-hl" data-sync="bubble_13"contenteditable="false">再问一次，我们 Keto Cake 有个合作机会想找你！
+主要是送你蛋糕体验，看你喜不喜欢我们的产品 🎂</div>
+            <div class="bubble" data-sync="bubble_14"contenteditable="false">有空的话回我一下嘛～
+不回也没关系，不会再打扰你了哈哈</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('keto-fu-a',this)">📋 复制话术</button>
+        </div>
+
+        <div class="card keto-card">
+          <div class="card-header">
+            <div class="card-icon keto-icon">🎁</div>
+            <div><div class="card-label keto-label" data-sync="card_label_5">跟进 B</div><div class="card-title" data-sync="card_title_5">提供额外诱因版</div></div>
+          </div>
+          <div class="script" id="keto-fu-b">
+            <div class="bubble" data-sync="bubble_15"contenteditable="false">嗨～再来打个招呼！</div>
+            <div class="bubble keto-hl" data-sync="bubble_16"contenteditable="false">这次可以送你我们最新款的蛋糕，
+最近很多人都在问这个口味！🎂
+如果有兴趣的话告诉我一下，这周还有名额 🙌</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('keto-fu-b',this)">📋 复制话术</button>
+        </div>
+
+        <div class="card keto-card">
+          <div class="card-header">
+            <div class="card-icon keto-icon">🚫</div>
+            <div><div class="card-label keto-label" data-sync="card_label_6">拒绝回应</div><div class="card-title" data-sync="card_title_6">对方说没时间 / 不接单</div></div>
+          </div>
+          <div class="script" id="keto-reject">
+            <div class="bubble" data-sync="bubble_17"contenteditable="false">完全没问题！很感谢你回复我 😊</div>
+            <div class="bubble keto-hl" data-sync="bubble_18"contenteditable="false">那我们先保持联系，
+以后有新产品或 campaign 再来找你～
+祝你最近一切顺利！🌿</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('keto-reject',this)">📋 复制话术</button>
+        </div>
+
+      </div>
+      <div class="tips-box">
+        <div class="tips-title">⚠️ 注意事项</div>
+        <ul class="tips-list">
+          <li>跟进最多 2 次，不要骚扰对方</li>
+          <li>第二次跟进可以附上产品图片</li>
+          <li>被拒绝要保持专业，留下好印象</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CONFIRM -->
+    <div id="keto-confirm" class="section-panel">
+      <div class="sec-title" data-sync="sec_title_3">🤝 谈合作 & 确认 <span class="sec-sub">Confirm Collab</span></div>
+      <div class="cards">
+
+        <div class="card keto-card">
+          <div class="card-header">
+            <div class="card-icon keto-icon">📋</div>
+            <div><div class="card-label keto-label" data-sync="card_label_7">合作说明</div><div class="card-title" data-sync="card_title_7">说明合作方式</div></div>
+          </div>
+          <div class="script" id="keto-collab">
+            <div class="bubble" data-sync="bubble_19"contenteditable="false">太好了～我来跟你说说我们的合作方式！</div>
+            <div class="bubble keto-hl" data-sync="bubble_20"contenteditable="false">📦 我们会免费寄/安排蛋糕给你体验
+📱 如果你觉得好吃、适合你的受众，我们希望你能发帖子或story分享
+✏️ 内容可以是你自己的风格，不需要照稿写
+💰 帖子有额外的费用，我们再具体谈</div>
+            <div class="bubble" data-sync="bubble_21"contenteditable="false">我们不要求你说假话——如果你真的喜欢，才分享 😊
+请问你平时的合作 rate 是怎样的呀？</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('keto-collab',this)">📋 复制话术</button>
+        </div>
+
+        <div class="card keto-card">
+          <div class="card-header">
+            <div class="card-icon keto-icon">💸</div>
+            <div><div class="card-label keto-label" data-sync="card_label_8">讨价还价</div><div class="card-title" data-sync="card_title_8">对方要求太高时</div></div>
+          </div>
+          <div class="script" id="keto-nego">
+            <div class="bubble" data-sync="bubble_22"contenteditable="false">谢谢你告诉我！</div>
+            <div class="bubble keto-hl" data-sync="bubble_23"contenteditable="false">老实说我们目前的预算比这个小一些，
+不过我们很希望跟你合作～
+可以问一下，如果是 story only 或者简短 post 的话，
+会不会有不同的 rate 呢？</div>
+            <div class="bubble" data-sync="bubble_24"contenteditable="false">我们先从小合作开始，之后有更大的 campaign 也会第一个想到你 😊</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('keto-nego',this)">📋 复制话术</button>
+        </div>
+
+        <div class="card keto-card">
+          <div class="card-header">
+            <div class="card-icon keto-icon">✅</div>
+            <div><div class="card-label keto-label" data-sync="card_label_9">确认合作</div><div class="card-title" data-sync="card_title_9">发产品前确认细节</div></div>
+          </div>
+          <div class="script" id="keto-confirm-script">
+            <div class="bubble" data-sync="bubble_25"contenteditable="false">好的！那我们就这样说定了～</div>
+            <div class="bubble keto-hl" data-sync="bubble_26"contenteditable="false">麻烦你告诉我：
+1️⃣ 送货地址
+2️⃣ 你希望哪个口味
+3️⃣ 大概什么时候方便收货？</div>
+            <div class="bubble" data-sync="bubble_27"contenteditable="false">我们会提前一天联系你确认时间 🙌
+有任何问题随时找我！</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('keto-confirm-script',this)">📋 复制话术</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- DELIVERY FOLLOWUP -->
+    <div id="keto-delivery" class="section-panel">
+      <div class="sec-title" data-sync="sec_title_4">📦 收货跟进 <span class="sec-sub">After Delivery</span></div>
+      <div class="cards">
+
+        <div class="card keto-card">
+          <div class="card-header">
+            <div class="card-icon keto-icon">🌅</div>
+            <div><div class="card-label keto-label" data-sync="card_label_10">当天通知</div><div class="card-title" data-sync="card_title_10">Delivery 当天发送</div></div>
+          </div>
+          <div class="script" id="keto-del-a">
+            <div class="bubble keto-hl" data-sync="bubble_28"contenteditable="false">*Morning，我们今天会delivery 蛋糕给你喔 🎂 *</div>
+            <div class="bubble" data-sync="bubble_29"contenteditable="false">可以的话 麻烦dear在接收到后拍个照片
+确保是完好无损 然后和我们报个平安呀 💗</div>
+            <div class="bubble warning" data-sync="bubble_30"contenteditable="false">⚠️ 记得driver到了 要上前去接收喔～
+我们没有door to door service
+不要放置在lobby或外面太久
+以免天气太热容易融化 😣</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('keto-del-a',this)">📋 复制话术</button>
+        </div>
+
+        <div class="card keto-card">
+          <div class="card-header">
+            <div class="card-icon keto-icon">💬</div>
+            <div><div class="card-label keto-label" data-sync="card_label_11">收货问候</div><div class="card-title" data-sync="card_title_11">送达后问候</div></div>
+          </div>
+          <div class="script" id="keto-del-b">
+            <div class="bubble" data-sync="bubble_31"contenteditable="false">嗨！蛋糕到了吗？😊</div>
+            <div class="bubble keto-hl" data-sync="bubble_32"contenteditable="false">希望你喜欢！有任何问题随时告诉我～
+记得拍开箱照哈哈 📸</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('keto-del-b',this)">📋 复制话术</button>
+        </div>
+
+        <div class="card keto-card">
+          <div class="card-header">
+            <div class="card-icon keto-icon">📝</div>
+            <div><div class="card-label keto-label" data-sync="card_label_12">提醒发帖</div><div class="card-title" data-sync="card_title_12">礼貌提醒（收货几天后）</div></div>
+          </div>
+          <div class="script" id="keto-del-c">
+            <div class="bubble" data-sync="bubble_33"contenteditable="false">嗨～不好意思打扰！</div>
+            <div class="bubble keto-hl" data-sync="bubble_34"contenteditable="false">想问一下蛋糕你吃了觉得怎么样呀？
+如果你还没发的话，不用急，慢慢来～
+只是确认一下你有收到，有没有需要我提供更多产品资料？ 🙂</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('keto-del-c',this)">📋 复制话术</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ARRANGE -->
+    <div id="keto-arrange" class="section-panel">
+      <div class="sec-title" data-sync="sec_title_5">📋 Delivery 安排表 <span class="sec-sub">Keto Cake Time Slots</span></div>
+      <div class="delivery-grid">
+
+        <div class="card keto-card">
+          <div class="card-header">
+            <div class="card-icon keto-icon">🆓</div>
+            <div><div class="card-label keto-label" data-sync="card_label_13">免费体验</div><div class="card-title" data-sync="card_title_13">FOC Delivery Arrange</div></div>
+          </div>
+          <span class="form-badge badge-foc">FOC — Free of Charge</span>
+          <div class="form-rows">
+            <div class="form-row"><div class="form-key">Full Name</div><div class="form-val" data-sync="formval_1" contenteditable="false">请填写全名</div></div>
+            <div class="form-row"><div class="form-key">Address</div><div class="form-val" data-sync="formval_2" contenteditable="false">完整地址</div></div>
+            <div class="form-row"><div class="form-key">Phone Number</div><div class="form-val" data-sync="formval_3" contenteditable="false">联系电话</div></div>
+            <div class="form-row"><div class="form-key">Product</div><div class="form-val" data-sync="formval_3b" contenteditable="false">蛋糕款式</div></div>
+            <div class="form-row"><div class="form-key">Delivery Date</div><div class="form-val" data-sync="formval_4" contenteditable="false">希望送货日期</div></div>
+          </div>
+          <div class="slots-label">⏰ Time Slot (choose one)</div>
+          <div class="slots-sub">*will be delivered within this time frame</div>
+          <div class="slots">
+            <div class="slot keto-slot">🕘 9:45am – 11:45am</div>
+            <div class="slot keto-slot">🕛 11:45am – 1:45pm</div>
+            <div class="slot keto-slot">🕐 1:45pm – 3:45pm</div>
+            <div class="slot keto-slot">🕒 3:45pm – 5:45pm</div>
+          </div>
+          <button class="copy-btn" style="margin-top:14px" onclick="copyDelivery('keto-foc',this)">📋 复制表格文字</button>
+          <div id="keto-foc" style="display:none">FOC Delivery Arrange (Keto Cake)
+
+Full Name:
+Address:
+Phone Number:
+Delivery Date:
+
+Time Slot (choose one):
+☐ 9:45am – 11:45am
+☐ 11:45am – 1:45pm
+☐ 1:45pm – 3:45pm
+☐ 3:45pm – 5:45pm</div>
+        </div>
+
+        <div class="card keto-card">
+          <div class="card-header">
+            <div class="card-icon keto-icon">💳</div>
+            <div><div class="card-label keto-label" data-sync="card_label_14">付款合作</div><div class="card-title" data-sync="card_title_14">Payment Delivery Arrange</div></div>
+          </div>
+          <span class="form-badge badge-payment">Payment — 付费合作</span>
+          <div class="form-rows">
+            <div class="form-row"><div class="form-key">Full Name</div><div class="form-val" data-sync="formval_5" contenteditable="false">请填写全名</div></div>
+            <div class="form-row"><div class="form-key">Address</div><div class="form-val" data-sync="formval_6" contenteditable="false">完整地址</div></div>
+            <div class="form-row"><div class="form-key">Phone Number</div><div class="form-val" data-sync="formval_7" contenteditable="false">联系电话</div></div>
+            <div class="form-row"><div class="form-key">Product</div><div class="form-val" data-sync="formval_8" contenteditable="false">蛋糕款式</div></div>
+            <div class="form-row"><div class="form-key">Total</div><div class="form-val" data-sync="formval_9" contenteditable="false">RMxx (photo / video)</div></div>
+            <div class="form-row"><div class="form-key">IC Number</div><div class="form-val" data-sync="formval_10" contenteditable="false">身份证号码</div></div>
+            <div class="form-row"><div class="form-key">Bank Details</div><div class="form-val" data-sync="formval_11" contenteditable="false">银行名 + 账号</div></div>
+            <div class="form-row"><div class="form-key">TIN No (Income Tax)</div><div class="form-val" data-sync="formval_12" contenteditable="false">税务号码</div></div>
+            <div class="form-row"><div class="form-key">Delivery Date</div><div class="form-val" data-sync="formval_13" contenteditable="false">希望送货日期</div></div>
+          </div>
+          <div class="slots-label">⏰ Time Slot (choose one)</div>
+          <div class="slots-sub">*will be delivered within this time frame</div>
+          <div class="slots">
+            <div class="slot keto-slot">🕘 9:45am – 11:45am</div>
+            <div class="slot keto-slot">🕛 11:45am – 1:45pm</div>
+            <div class="slot keto-slot">🕐 1:45pm – 3:45pm</div>
+            <div class="slot keto-slot">🕒 3:45pm – 5:45pm</div>
+          </div>
+          <button class="copy-btn" style="margin-top:14px" onclick="copyDelivery('keto-pay',this)">📋 复制表格文字</button>
+          <div id="keto-pay" style="display:none">Payment Delivery Arrange (Keto Cake)
+
+Full Name:
+Address:
+Phone Number:
+Product:
+Total: RM (photo / video)
+IC Number:
+Bank Details:
+TIN No (Income Tax):
+Delivery Date:
+
+Time Slot (choose one):
+☐ 9:45am – 11:45am
+☐ 11:45am – 1:45pm
+☐ 1:45pm – 3:45pm
+☐ 3:45pm – 5:45pm</div>
+        </div>
+
+      </div>
+      <div class="tips-box">
+        <div class="tips-title">⚠️ Delivery 重要提醒</div>
+        <ul class="tips-list">
+          <li>我们没有 door to door service，请KOL亲自去接收</li>
+          <li>不要放置在 lobby 或外面太久，天气热容易融化</li>
+          <li>收到货后请KOL拍照确认完好无损，然后报平安</li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /keto-page -->
+
+
+<!-- ══════════ CAKETELLA PAGE ══════════ -->
+<div id="cake-page" class="page cake-page">
+  <div class="sec-nav cake-nav">
+    <button class="sec-btn active" onclick="showSection('cake','dm')">📩 第一次私信</button>
+    <button class="sec-btn" onclick="showSection('cake','followup')">🔁 跟进话术</button>
+    <button class="sec-btn" onclick="showSection('cake','confirm')">🤝 谈合作 & 确认</button>
+    <button class="sec-btn" onclick="showSection('cake','delivery')">📦 收货跟进</button>
+    <button class="sec-btn" onclick="showSection('cake','arrange')">📋 Delivery 安排表</button>
+  </div>
+  <div class="main">
+
+    <!-- DM -->
+    <div id="cake-dm" class="section-panel active">
+      <div class="sec-title" data-sync="sec_title_6">📩 第一次私信 <span class="sec-sub">First DM</span></div>
+      <div class="cards">
+
+        <div class="card cake-card">
+          <div class="card-header">
+            <div class="card-icon cake-icon">🌸</div>
+            <div><div class="card-label cake-label" data-sync="card_label_15">版本 A</div><div class="card-title" data-sync="card_title_15">小红书 — 基础版（5k–30k粉）</div></div>
+          </div>
+          <div class="script" id="cake-dm-a">
+            <div class="bubble" data-sync="bubble_35"contenteditable="false">你好呀～我是XX来自Caketella 😊</div>
+            <div class="bubble" data-sync="bubble_36"contenteditable="false">Caketella 是一家主打在线上售卖酒精蛋糕～</div>
+            <div class="bubble cake-hl" data-sync="bubble_37"contenteditable="false">我们正找着博主做推广以互惠的方式～
+我在小红书上看到你的贴文很不错 ✨
+想请问你有兴趣与我们合作吗？</div>
+            <div class="bubble" data-sync="bubble_38"contenteditable="false">合作方式：我们会附送delivery蛋糕给你拍摄
+你会以顾客的角度拍摄以及在小红书上分享</div>
+            <div class="bubble" data-sync="bubble_39"contenteditable="false">期待收到你的回复 谢谢🥰</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('cake-dm-a',this)">📋 复制话术</button>
+        </div>
+
+        <div class="card cake-card">
+          <div class="card-header">
+            <div class="card-icon cake-icon">💎</div>
+            <div><div class="card-label cake-label" data-sync="card_label_16">版本 B</div><div class="card-title" data-sync="card_title_16">小红书 — 夸赞型（30k+ 粉）</div></div>
+          </div>
+          <div class="script" id="cake-dm-b">
+            <div class="bubble" data-sync="bubble_40"contenteditable="false">你好，我是XX来自Caketella</div>
+            <div class="bubble cake-hl" data-sync="bubble_41"contenteditable="false">目前我们正在找xhs food blogger / 小红书博主
+以互惠的方式来推广～
+我们在xhs上看到你的贴文都很不错，
+想请问看你有没有兴趣和我们一起合作呀？ ❤️🥰</div>
+            <div class="bubble" data-sync="bubble_42"contenteditable="false">期待收到你的回复 谢谢🥰</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('cake-dm-b',this)">📋 复制话术</button>
+        </div>
+
+        <div class="card cake-card">
+          <div class="card-header">
+            <div class="card-icon cake-icon">📍</div>
+            <div><div class="card-label cake-label" data-sync="card_label_17">版本 C</div><div class="card-title" data-sync="card_title_17">雪隆博主特版</div></div>
+          </div>
+          <div class="script" id="cake-dm-c">
+            <div class="bubble" data-sync="bubble_43"contenteditable="false">你好，我是XX来自Caketella</div>
+            <div class="bubble cake-hl" data-sync="bubble_44"contenteditable="false">请问你是雪隆区博主吗？我们看了你分享的贴文很喜欢你的风格，
+不知道你有没有兴趣和我们一起合作呢？
+如果有兴趣的话方便给我们你的WS 📲更多详情了解吗？</div>
+            <div class="bubble" data-sync="bubble_45"contenteditable="false">期待收到你的回复 谢谢🥰</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('cake-dm-c',this)">📋 复制话术</button>
+        </div>
+
+        <div class="card cake-card">
+          <div class="card-header">
+            <div class="card-icon cake-icon">🌐</div>
+            <div><div class="card-label cake-label" data-sync="card_label_18">版本 D</div><div class="card-title" data-sync="card_title_18">Instagram / TikTok — English</div></div>
+          </div>
+          <div class="script" id="cake-dm-d">
+            <div class="bubble" data-sync="bubble_46"contenteditable="false">Hi [Name]! 👋 I'm from CakeTella Malaysia～</div>
+            <div class="bubble cake-hl" data-sync="bubble_47"contenteditable="false">We make alcohol-infused cakes with premium spirits 🎂
+Saw your content and really loved your vibe 💕
+We'd love to send you some cakes to try — no pressure at all!</div>
+            <div class="bubble" data-sync="bubble_48"contenteditable="false">Would you be open to a collab? Feel free to DM back or drop your WhatsApp 😊</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('cake-dm-d',this)">📋 Copy Script</button>
+        </div>
+
+      </div>
+      <div class="tips-box">
+        <div class="tips-title">⚠️ 注意事项</div>
+        <ul class="tips-list">
+          <li>保持轻松口气，字数控制在 100 字以内</li>
+          <li>记得把 "XX" 换成自己的名字</li>
+          <li>不要一开始就问 rate 或谈费用</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FOLLOW UP -->
+    <div id="cake-followup" class="section-panel">
+      <div class="sec-title" data-sync="sec_title_7">🔁 跟进话术 <span class="sec-sub">Follow Up</span></div>
+      <div class="cards">
+
+        <div class="card cake-card">
+          <div class="card-header">
+            <div class="card-icon cake-icon">📅</div>
+            <div><div class="card-label cake-label" data-sync="card_label_19">跟进 A</div><div class="card-title" data-sync="card_title_19">3–5 天后跟进</div></div>
+          </div>
+          <div class="script" id="cake-fu-a">
+            <div class="bubble" data-sync="bubble_49"contenteditable="false">嗨～不知道你上次有没有看到我的消息 😅</div>
+            <div class="bubble cake-hl" data-sync="bubble_50"contenteditable="false">再问一次，我们 Caketella 有个合作机会想找你！
+主要是送你蛋糕体验，看你喜不喜欢我们的产品 🎂</div>
+            <div class="bubble" data-sync="bubble_51"contenteditable="false">有空的话回我一下嘛～
+不回也没关系，不会再打扰你了哈哈</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('cake-fu-a',this)">📋 复制话术</button>
+        </div>
+
+        <div class="card cake-card">
+          <div class="card-header">
+            <div class="card-icon cake-icon">🎁</div>
+            <div><div class="card-label cake-label" data-sync="card_label_20">跟进 B</div><div class="card-title" data-sync="card_title_20">提供额外诱因版</div></div>
+          </div>
+          <div class="script" id="cake-fu-b">
+            <div class="bubble" data-sync="bubble_52"contenteditable="false">嗨～再来打个招呼！</div>
+            <div class="bubble cake-hl" data-sync="bubble_53"contenteditable="false">这次可以送你我们最新款的蛋糕，
+最近很多人都在问这个口味！🎂
+如果有兴趣的话告诉我一下，这周还有名额 🙌</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('cake-fu-b',this)">📋 复制话术</button>
+        </div>
+
+        <div class="card cake-card">
+          <div class="card-header">
+            <div class="card-icon cake-icon">🚫</div>
+            <div><div class="card-label cake-label" data-sync="card_label_21">拒绝回应</div><div class="card-title" data-sync="card_title_21">对方说没时间 / 不接单</div></div>
+          </div>
+          <div class="script" id="cake-reject">
+            <div class="bubble" data-sync="bubble_54"contenteditable="false">完全没问题！很感谢你回复我 😊</div>
+            <div class="bubble cake-hl" data-sync="bubble_55"contenteditable="false">那我们先保持联系，
+以后有新产品或 campaign 再来找你～
+祝你最近一切顺利！🌸</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('cake-reject',this)">📋 复制话术</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CONFIRM -->
+    <div id="cake-confirm" class="section-panel">
+      <div class="sec-title" data-sync="sec_title_8">🤝 谈合作 & 确认 <span class="sec-sub">Confirm Collab</span></div>
+      <div class="cards">
+
+        <div class="card cake-card">
+          <div class="card-header">
+            <div class="card-icon cake-icon">📋</div>
+            <div><div class="card-label cake-label" data-sync="card_label_22">合作说明</div><div class="card-title" data-sync="card_title_22">说明合作方式</div></div>
+          </div>
+          <div class="script" id="cake-collab">
+            <div class="bubble" data-sync="bubble_56"contenteditable="false">太好了～我来跟你说说我们的合作方式！</div>
+            <div class="bubble cake-hl" data-sync="bubble_57"contenteditable="false">📦 我们会免费寄/安排蛋糕给你体验
+📱 如果你觉得好吃、适合你的受众，我们希望你能发帖子或story分享
+✏️ 内容可以是你自己的风格，不需要照稿写
+💰 帖子有额外的费用，我们再具体谈</div>
+            <div class="bubble" data-sync="bubble_58"contenteditable="false">我们不要求你说假话——如果你真的喜欢，才分享 😊
+请问你平时的合作 rate 是怎样的呀？</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('cake-collab',this)">📋 复制话术</button>
+        </div>
+
+        <div class="card cake-card">
+          <div class="card-header">
+            <div class="card-icon cake-icon">💸</div>
+            <div><div class="card-label cake-label" data-sync="card_label_23">讨价还价</div><div class="card-title" data-sync="card_title_23">对方要求太高时</div></div>
+          </div>
+          <div class="script" id="cake-nego">
+            <div class="bubble" data-sync="bubble_59"contenteditable="false">谢谢你告诉我！</div>
+            <div class="bubble cake-hl" data-sync="bubble_60"contenteditable="false">老实说我们目前的预算比这个小一些，
+不过我们很希望跟你合作～
+可以问一下，如果是 story only 或者简短 post 的话，
+会不会有不同的 rate 呢？</div>
+            <div class="bubble" data-sync="bubble_61"contenteditable="false">我们先从小合作开始，之后有更大的 campaign 也会第一个想到你 😊</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('cake-nego',this)">📋 复制话术</button>
+        </div>
+
+        <div class="card cake-card">
+          <div class="card-header">
+            <div class="card-icon cake-icon">✅</div>
+            <div><div class="card-label cake-label" data-sync="card_label_24">确认合作</div><div class="card-title" data-sync="card_title_24">发产品前确认细节</div></div>
+          </div>
+          <div class="script" id="cake-confirm-script">
+            <div class="bubble" data-sync="bubble_62"contenteditable="false">好的！那我们就这样说定了～</div>
+            <div class="bubble cake-hl" data-sync="bubble_63"contenteditable="false">麻烦你告诉我：
+1️⃣ 送货地址
+2️⃣ 你希望哪个口味
+3️⃣ 大概什么时候方便收货？</div>
+            <div class="bubble" data-sync="bubble_64"contenteditable="false">我们会提前一天联系你确认时间 🙌
+有任何问题随时找我！</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('cake-confirm-script',this)">📋 复制话术</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- DELIVERY FOLLOWUP -->
+    <div id="cake-delivery" class="section-panel">
+      <div class="sec-title" data-sync="sec_title_9">📦 收货跟进 <span class="sec-sub">After Delivery</span></div>
+      <div class="cards">
+
+        <div class="card cake-card">
+          <div class="card-header">
+            <div class="card-icon cake-icon">🌅</div>
+            <div><div class="card-label cake-label" data-sync="card_label_25">当天通知</div><div class="card-title" data-sync="card_title_25">Delivery 当天发送</div></div>
+          </div>
+          <div class="script" id="cake-del-a">
+            <div class="bubble cake-hl" data-sync="bubble_65"contenteditable="false">*Morning，我们今天会delivery 蛋糕给你喔 🎂 *</div>
+            <div class="bubble" data-sync="bubble_66"contenteditable="false">可以的话 麻烦dear在接收到后拍个照片
+确保是完好无损 然后和我们报个平安呀 💗</div>
+            <div class="bubble warning" data-sync="bubble_67"contenteditable="false">⚠️ 记得driver到了 要上前去接收喔～
+我们没有door to door service
+不要放置在lobby或外面太久
+以免天气太热容易融化 😣</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('cake-del-a',this)">📋 复制话术</button>
+        </div>
+
+        <div class="card cake-card">
+          <div class="card-header">
+            <div class="card-icon cake-icon">💬</div>
+            <div><div class="card-label cake-label" data-sync="card_label_26">收货问候</div><div class="card-title" data-sync="card_title_26">送达后问候</div></div>
+          </div>
+          <div class="script" id="cake-del-b">
+            <div class="bubble" data-sync="bubble_68"contenteditable="false">嗨！蛋糕到了吗？😊</div>
+            <div class="bubble cake-hl" data-sync="bubble_69"contenteditable="false">希望你喜欢！有任何问题随时告诉我～
+记得拍开箱照哈哈 📸</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('cake-del-b',this)">📋 复制话术</button>
+        </div>
+
+        <div class="card cake-card">
+          <div class="card-header">
+            <div class="card-icon cake-icon">📝</div>
+            <div><div class="card-label cake-label" data-sync="card_label_27">提醒发帖</div><div class="card-title" data-sync="card_title_27">礼貌提醒（收货几天后）</div></div>
+          </div>
+          <div class="script" id="cake-del-c">
+            <div class="bubble" data-sync="bubble_70"contenteditable="false">嗨～不好意思打扰！</div>
+            <div class="bubble cake-hl" data-sync="bubble_71"contenteditable="false">想问一下蛋糕你吃了觉得怎么样呀？
+如果你还没发的话，不用急，慢慢来～
+只是确认一下你有收到，有没有需要我提供更多产品资料？ 🙂</div>
+          </div>
+          <button class="copy-btn" onclick="copyScript('cake-del-c',this)">📋 复制话术</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ARRANGE -->
+    <div id="cake-arrange" class="section-panel">
+      <div class="sec-title" data-sync="sec_title_10">📋 Delivery 安排表 <span class="sec-sub">CakeTella Time Slots</span></div>
+      <div class="delivery-grid">
+
+        <div class="card cake-card">
+          <div class="card-header">
+            <div class="card-icon cake-icon">🆓</div>
+            <div><div class="card-label cake-label" data-sync="card_label_28">免费体验</div><div class="card-title" data-sync="card_title_28">FOC Delivery Arrange</div></div>
+          </div>
+          <span class="form-badge badge-foc-cake">FOC — Free of Charge</span>
+          <div class="form-rows">
+            <div class="form-row"><div class="form-key">Full Name</div><div class="form-val" data-sync="formval_14" contenteditable="false">请填写全名</div></div>
+            <div class="form-row"><div class="form-key">Address</div><div class="form-val" data-sync="formval_15" contenteditable="false">完整地址</div></div>
+            <div class="form-row"><div class="form-key">Phone Number</div><div class="form-val" data-sync="formval_16" contenteditable="false">联系电话</div></div>
+            <div class="form-row"><div class="form-key">Product</div><div class="form-val" data-sync="formval_16b" contenteditable="false">蛋糕款式</div></div>
+            <div class="form-row"><div class="form-key">Delivery Date</div><div class="form-val" data-sync="formval_17" contenteditable="false">希望送货日期</div></div>
+          </div>
+          <div class="slots-label">⏰ Time Slot (choose one)</div>
+          <div class="slots-sub">*will be delivered within this time frame</div>
+          <div class="slots">
+            <div class="slot cake-slot">🕙 10:00am – 12:00pm</div>
+            <div class="slot cake-slot">🕛 12:00pm – 2:00pm</div>
+            <div class="slot cake-slot">🕑 2:00pm – 4:00pm</div>
+            <div class="slot cake-slot">🕓 4:00pm – 6:00pm</div>
+          </div>
+          <button class="copy-btn" style="margin-top:14px" onclick="copyDelivery('cake-foc',this)">📋 复制表格文字</button>
+          <div id="cake-foc" style="display:none">FOC Delivery Arrange (CakeTella)
+
+Full Name:
+Address:
+Phone Number:
+Delivery Date:
+
+Time Slot (choose one):
+☐ 10:00am – 12:00pm
+☐ 12:00pm – 2:00pm
+☐ 2:00pm – 4:00pm
+☐ 4:00pm – 6:00pm</div>
+        </div>
+
+        <div class="card cake-card">
+          <div class="card-header">
+            <div class="card-icon cake-icon">💳</div>
+            <div><div class="card-label cake-label" data-sync="card_label_29">付款合作</div><div class="card-title" data-sync="card_title_29">Payment Delivery Arrange</div></div>
+          </div>
+          <span class="form-badge badge-payment">Payment — 付费合作</span>
+          <div class="form-rows">
+            <div class="form-row"><div class="form-key">Full Name</div><div class="form-val" data-sync="formval_18" contenteditable="false">请填写全名</div></div>
+            <div class="form-row"><div class="form-key">Address</div><div class="form-val" data-sync="formval_19" contenteditable="false">完整地址</div></div>
+            <div class="form-row"><div class="form-key">Phone Number</div><div class="form-val" data-sync="formval_20" contenteditable="false">联系电话</div></div>
+            <div class="form-row"><div class="form-key">Product</div><div class="form-val" data-sync="formval_21" contenteditable="false">蛋糕款式</div></div>
+            <div class="form-row"><div class="form-key">Total</div><div class="form-val" data-sync="formval_22" contenteditable="false">RMxx (photo / video)</div></div>
+            <div class="form-row"><div class="form-key">IC Number</div><div class="form-val" data-sync="formval_23" contenteditable="false">身份证号码</div></div>
+            <div class="form-row"><div class="form-key">Bank Details</div><div class="form-val" data-sync="formval_24" contenteditable="false">银行名 + 账号</div></div>
+            <div class="form-row"><div class="form-key">TIN No (Income Tax)</div><div class="form-val" data-sync="formval_25" contenteditable="false">税务号码</div></div>
+            <div class="form-row"><div class="form-key">Delivery Date</div><div class="form-val" data-sync="formval_26" contenteditable="false">希望送货日期</div></div>
+          </div>
+          <div class="slots-label">⏰ Time Slot (choose one)</div>
+          <div class="slots-sub">*will be delivered within this time frame</div>
+          <div class="slots">
+            <div class="slot cake-slot">🕙 10:00am – 12:00pm</div>
+            <div class="slot cake-slot">🕛 12:00pm – 2:00pm</div>
+            <div class="slot cake-slot">🕑 2:00pm – 4:00pm</div>
+            <div class="slot cake-slot">🕓 4:00pm – 6:00pm</div>
+          </div>
+          <button class="copy-btn" style="margin-top:14px" onclick="copyDelivery('cake-pay',this)">📋 复制表格文字</button>
+          <div id="cake-pay" style="display:none">Payment Delivery Arrange (CakeTella)
+
+Full Name:
+Address:
+Phone Number:
+Product:
+Total: RM (photo / video)
+IC Number:
+Bank Details:
+TIN No (Income Tax):
+Delivery Date:
+
+Time Slot (choose one):
+☐ 10:00am – 12:00pm
+☐ 12:00pm – 2:00pm
+☐ 2:00pm – 4:00pm
+☐ 4:00pm – 6:00pm</div>
+        </div>
+
+      </div>
+      <div class="tips-box">
+        <div class="tips-title">⚠️ Delivery 重要提醒</div>
+        <ul class="tips-list">
+          <li>我们没有 door to door service，请KOL亲自去接收</li>
+          <li>不要放置在 lobby 或外面太久，天气热容易融化</li>
+          <li>收到货后请KOL拍照确认完好无损，然后报平安</li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /cake-page -->
+
+<!-- Firebase SDK -->
+</div>
+
+<script>
+function openApp(name) {
+  document.getElementById('app-home').style.display = 'none';
+  document.getElementById('back-btn').style.display = 'flex';
+  
+  const trackerSidebar = document.querySelector('#app-tracker .sidebar');
+  
+  if (name === 'tracker') {
+    document.getElementById('app-tracker').style.display = 'flex';
+    document.getElementById('app-tracker').style.minHeight = '100vh';
+    document.getElementById('app-campaign').style.display = 'none';
+    if (trackerSidebar) trackerSidebar.style.visibility = 'visible';
+    const tog = document.getElementById('sb-toggle'); if(tog) tog.style.display='flex';
+    if (typeof renderMonthList === 'function') { renderMonthList(); showOverview(); }
+  } else {
+    document.getElementById('app-tracker').style.display = 'none';
+    document.getElementById('app-campaign').style.display = 'block';
+    if (trackerSidebar) trackerSidebar.style.visibility = 'hidden';
+  }
+}
+
+function goHome() {
+  document.getElementById('app-home').style.display = 'flex';
+  document.getElementById('app-tracker').style.display = 'none';
+  document.getElementById('app-campaign').style.display = 'none';
+  document.getElementById('back-btn').style.display = 'none';
+  const trackerSidebar = document.querySelector('#app-tracker .sidebar');
+  if (trackerSidebar) trackerSidebar.style.visibility = 'hidden';
+}
+
+function toggleSidebar() {
+  const sidebar = document.querySelector("#app-tracker .sidebar");
+  const main = document.querySelector("#app-tracker .main");
+  const toggle = document.getElementById("sb-toggle");
+  const collapsed = sidebar.classList.toggle("collapsed");
+  if (main) main.classList.toggle("expanded", collapsed);
+  if (toggle) { toggle.textContent = collapsed ? "▶" : "◀"; toggle.classList.toggle("collapsed", collapsed); }
+}
+
+// On load, hide tracker sidebar since tracker is not active
+document.addEventListener('DOMContentLoaded', function() {
+  const trackerSidebar = document.querySelector('#app-tracker .sidebar');
+  if (trackerSidebar) trackerSidebar.style.visibility = 'hidden';
+});
+</script>
+
+<!-- Tracker Script -->
+<script>
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const KETO_SLOTS=['9:45 AM – 11:45 AM','11:45 AM – 1:45 PM','1:45 PM – 3:45 PM','3:45 PM – 5:45 PM'];
+const CAKE_SLOTS=['10am – 12pm','12pm – 2pm','2pm – 4pm','4pm – 6pm'];
+const SL={Off:'⊘ Off',Replying:'💬 Replying',Pending:'⏳ Pending',Done:'✓ Done'};
+
+let activeBrandFilter = 'all'; // 'all' | 'Keto Cake' | 'CakeTella'
+
+function setBrandFilter(brand) {
+  activeBrandFilter = brand;
+  ['all','keto','cake'].forEach(k => {
+    const el = document.getElementById('bf-'+k);
+    if (el) el.classList.remove('active');
+  });
+  const map = {'all':'bf-all','Keto Cake':'bf-keto','CakeTella':'bf-cake'};
+  const active = document.getElementById(map[brand] || 'bf-all');
+  if (active) active.classList.add('active');
+  renderInfList(document.getElementById('search-box').value);
+}
+
+function getSlots(brand){return brand==='CakeTella'?CAKE_SLOTS:brand==='Keto Cake'?KETO_SLOTS:[...KETO_SLOTS,...CAKE_SLOTS];}
+function slotOpts(brand,sel){return`<option value="" ${!sel?'selected':''}>Select time slot...</option>`+getSlots(brand).map(s=>`<option value="${s}" ${sel===s?'selected':''}>${s}</option>`).join('');}
+
+let db={months:[]};  // loaded from Firebase
+let curMonth=null,curInf=null;
+
+const save=()=>{
+  if(window._trackerDb && window._trackerReady){
+    const {ref,set}=window._trackerFirebase;
+    set(ref(window._trackerDb,'tracker_db'),db).catch(e=>console.error('Save error:',e));
+    showTrackerSync('saving');
+  } else {
+    // Firebase not ready yet, mark as pending
+    window._trackerSaveQueue = true;
+  }
+};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2);
+const esc=s=>{if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');};
+const av=n=>{if(!n)return'?';const p=n.trim().split(/\s+/);return p.length>=2?(p[0][0]+p[1][0]).toUpperCase():n.slice(0,2).toUpperCase();};
+const getM=id=>{if(!db.months)db.months=[];return db.months.find(m=>m.id===id);};
+const getI=(mid,iid)=>{const m=getM(mid);return m&&(m.influencers||[]).find(i=>i.id===iid);};
+const allInfs=()=>{if(!db.months)db.months=[];return db.months.flatMap(m=>(m.influencers||[]).map(i=>({...i,monthName:m.name,monthId:m.id})));}
+const totalRM=inf=>(parseFloat(inf.photo)||0)+(parseFloat(inf.video)||0);
+const fmtDate=d=>{if(!d)return'';const [y,mo,day]=d.split('-');return`${day}/${mo}/${y}`;};
+
+function setNav(id){['overview','search'].forEach(k=>document.getElementById('nav-'+k).classList.toggle('active',k===id));}
+
+/* ── MODAL ── */
+function showModal(){
+  if(!db.months)db.months=[];
+  const used=db.months.map(m=>m.name);
+  document.getElementById('modal-grid').innerHTML=MONTHS.map(m=>`<button class="mpick${used.includes(m)?' used':''}" onclick="addMonth('${m}')">${m}</button>`).join('');
+  document.getElementById('modal').style.display='flex';
+}
+function addMonth(name){
+  if(db.months.find(m=>m.name===name))return;
+  const m={id:uid(),name,influencers:[]};
+  const idx=MONTHS.indexOf(name);let ins=false;
+  for(let i=0;i<db.months.length;i++){if(MONTHS.indexOf(db.months[i].name)>idx){db.months.splice(i,0,m);ins=true;break;}}
+  if(!ins)db.months.push(m);
+  save();document.getElementById('modal').style.display='none';
+  renderMonthList();selectMonth(m.id);
+}
+function delMonth(id,e){
+  e.stopPropagation();
+  const m=getM(id);if(!confirm(`Delete ${m.name} and all its influencers?`))return;
+  db.months=db.months.filter(x=>x.id!==id);save();
+  if(curMonth===id){curMonth=null;curInf=null;showOverview();}
+  renderMonthList();
+}
+
+/* ── MONTH LIST ── */
+function renderMonthList(){
+  const el=document.getElementById('month-list');el.innerHTML='';
+  if(!db.months)db.months=[];
+  db.months.forEach(m=>{
+    if(!m.influencers)m.influencers=[];
+    const d=document.createElement('div');
+    d.className='month-item'+(m.id===curMonth?' active':'');
+    d.onclick=()=>selectMonth(m.id);
+    d.innerHTML=`<div class="month-name">${m.name}</div><div class="month-cnt">${m.influencers.length}</div><button class="xbtn" onclick="delMonth('${m.id}',event)">✕</button>`;
+    el.appendChild(d);
+  });
+}
+function selectMonth(id){
+  curMonth=id;curInf=null;
+  setNav('');renderMonthList();
+  ['overview','search'].forEach(k=>document.getElementById('nav-'+k).classList.remove('active'));
+  const m=getM(id);
+  document.getElementById('add-btn').disabled=false;
+  document.getElementById('inf-lbl').textContent=m.name;
+  document.getElementById('search-box').value='';
+  renderInfList('');
+  if(m.influencers.length===0){showEmpty('👤',`${m.name} — no influencers yet`,'Click "+ Add" to add your first influencer.','addInf()');}
+  else{document.getElementById('empty-state').style.display='none';}
+}
+
+function showEmpty(icon,title,sub,cta){
+  const es=document.getElementById('empty-state');
+  es.style.display='flex';
+  es.innerHTML=`<div class="empty-icon">${icon}</div><div class="empty-title">${title}</div><div class="empty-sub">${sub}</div>${cta?`<button class="empty-cta" onclick="${cta}">+ Add Influencer</button>`:''}`;
+  document.getElementById('content-area').style.display='none';
+}
+
+/* ── INF LIST ── */
+function renderInfList(q){
+  const el=document.getElementById('inf-list');el.innerHTML='';
+  if(!curMonth)return;
+  const m=getM(curMonth);
+  let list=m.influencers;
+  if(q)list=list.filter(i=>(i.name||'').toLowerCase().includes(q.toLowerCase())||(i.acc||'').toLowerCase().includes(q.toLowerCase()));
+  // Brand filter
+  if(activeBrandFilter!=='all')list=list.filter(i=>i.brand===activeBrandFilter||i.brand==='Both');
+  list.forEach(inf=>{
+    const d=document.createElement('div');
+    d.className='inf-item'+(inf.id===curInf?' active':'');
+    d.onclick=()=>selectInf(inf.id);
+    const rm=totalRM(inf);
+    const avBg=inf.id===curInf?'background:var(--green);color:#fff;':inf.brand==='CakeTella'?'background:var(--amber-l);color:var(--amber-d);':inf.brand==='Keto Cake'?'background:var(--green-l);color:var(--green-d);':'';
+    d.innerHTML=`<div class="inf-av" style="${avBg}">${av(inf.name)}</div><div class="inf-meta"><div class="inf-nm">${inf.name||'<i style="color:var(--faint)">New influencer</i>'}</div><div class="inf-sub"><div class="sdot sdot-${inf.status}"></div><span class="inf-pr">${inf.status}${rm>0?' · RM'+rm.toLocaleString():''}</span></div></div><button class="xbtn" onclick="delInf('${inf.id}',event)">✕</button>`;
+    el.appendChild(d);
+  });
+  document.getElementById('sb-footer').innerHTML=`${getM(curMonth).name}: <span>${getM(curMonth).influencers.length}</span> influencer${getM(curMonth).influencers.length!==1?'s':''}`;
+}
+function addInf(){
+  if(!curMonth)return;
+  const m=getM(curMonth);
+  const inf={id:uid(),name:'',acc:'',ig:'',phone:'',brand:'',platform:'',photo:'',video:'',deliveryDate:'',deliveryTime:'',postingDate:'',posts:'',stories:'',products:[],status:'Off',address:'',ic:'',remarks:''};
+  m.influencers.push(inf);save();renderInfList('');selectInf(inf.id);
+}
+function delInf(iid,e){
+  e.stopPropagation();if(!confirm('Delete this influencer?'))return;
+  const m=getM(curMonth);m.influencers=m.influencers.filter(i=>i.id!==iid);save();
+  if(curInf===iid){curInf=null;document.getElementById('content-area').style.display='none';
+    if(m.influencers.length===0)showEmpty('👤',`${m.name} — no influencers yet`,'Click "+ Add" to add your first influencer.','addInf()');
+  }
+  renderInfList(document.getElementById('search-box').value);
+}
+function selectInf(id){curInf=id;renderInfList(document.getElementById('search-box').value);renderDetail();}
+
+/* ── OVERVIEW ── */
+function showOverview(){
+  setNav('overview');curInf=null;renderMonthList();
+  document.getElementById('add-btn').disabled=!curMonth;
+  document.getElementById('empty-state').style.display='none';
+  const area=document.getElementById('content-area');area.style.display='block';
+  const all=allInfs();
+  const budget=all.reduce((a,i)=>a+totalRM(i),0);
+  const byS={Off:0,Replying:0,Pending:0,Done:0};
+  all.forEach(i=>byS[i.status]=(byS[i.status]||0)+1);
+  const today=new Date();today.setHours(0,0,0,0);
+  const upcoming=all.filter(i=>i.deliveryDate&&new Date(i.deliveryDate)>=today).sort((a,b)=>new Date(a.deliveryDate)-new Date(b.deliveryDate));
+  const active=all.filter(i=>i.status==='Replying'||i.status==='Pending');
+  const done=all.filter(i=>i.status==='Done');
+
+  area.innerHTML=`<div style="animation:fadeIn .18s ease">
+    <div class="page-title">Overview</div>
+    <div class="page-sub">All months · Keto Cake &amp; CakeTella</div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-num">${all.length}</div><div class="stat-lbl">Total influencers</div></div>
+      <div class="stat-card green"><div class="stat-num">${byS.Done}</div><div class="stat-lbl">Done</div></div>
+      <div class="stat-card amber"><div class="stat-num">${byS.Pending+byS.Replying}</div><div class="stat-lbl">In progress</div></div>
+      <div class="stat-card blue"><div class="stat-num">RM ${budget.toLocaleString()}</div><div class="stat-lbl">Total budget</div></div>
+    </div>
+
+    <div class="ov-section">
+      <div class="ov-head"><div class="ov-title">📦 Upcoming deliveries</div></div>
+      ${upcoming.length===0?`<div style="padding:16px;font-size:13px;color:var(--faint);text-align:center;">No upcoming deliveries</div>`:
+        upcoming.map(i=>`<div class="ov-row" onclick="goToInf('${i.monthId}','${i.id}')">
+          <div class="ov-av">${av(i.name)}</div>
+          <div class="ov-info"><div class="ov-name">${i.name||'Unnamed'}</div>
+          <div class="ov-detail">📅 ${fmtDate(i.deliveryDate)}${i.deliveryTime?' · ⏰ '+i.deliveryTime:''}${i.products&&i.products.length?` · ${i.products.join(', ')}`:''}</div></div>
+          <div class="ov-right"><span class="ov-faint">${i.monthName}</span><span class="sp sp-${i.status}">${i.status}</span></div>
+        </div>`).join('')}
+    </div>
+
+    <div class="ov-section">
+      <div class="ov-head"><div class="ov-title">💬 In progress</div></div>
+      ${active.length===0?`<div style="padding:16px;font-size:13px;color:var(--faint);text-align:center;">No active negotiations</div>`:
+        active.map(i=>`<div class="ov-row" onclick="goToInf('${i.monthId}','${i.id}')">
+          <div class="ov-av">${av(i.name)}</div>
+          <div class="ov-info"><div class="ov-name">${i.name||'Unnamed'}</div>
+          <div class="ov-detail">${i.acc||i.ig||'—'}${totalRM(i)>0?' · RM '+totalRM(i).toLocaleString():''}</div></div>
+          <div class="ov-right"><span class="ov-faint">${i.monthName}</span><span class="sp sp-${i.status}">${i.status}</span></div>
+        </div>`).join('')}
+    </div>
+
+    <div class="ov-section">
+      <div class="ov-head"><div class="ov-title">✅ Completed</div></div>
+      ${done.length===0?`<div style="padding:16px;font-size:13px;color:var(--faint);text-align:center;">No completed collaborations yet</div>`:
+        done.map(i=>`<div class="ov-row" onclick="goToInf('${i.monthId}','${i.id}')">
+          <div class="ov-av">${av(i.name)}</div>
+          <div class="ov-info"><div class="ov-name">${i.name||'Unnamed'}</div>
+          <div class="ov-detail">${i.acc||i.ig||'—'}${i.postingDate?' · 📸 '+fmtDate(i.postingDate):''}</div></div>
+          <div class="ov-right"><span class="ov-faint">${i.monthName}</span>${totalRM(i)>0?`<span class="ov-mono">RM ${totalRM(i).toLocaleString()}</span>`:''}<span class="sp sp-Done">Done</span></div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+/* ── SEARCH ── */
+function showSearch(){
+  setNav('search');curInf=null;renderMonthList();
+  document.getElementById('empty-state').style.display='none';
+  const area=document.getElementById('content-area');area.style.display='block';
+  renderSearchView('','all');
+}
+function renderSearchView(q,sf){
+  const area=document.getElementById('content-area');
+  const all=allInfs();
+  const grouped={};
+  all.forEach(i=>{const key=(i.name||'').toLowerCase().trim()||i.id;if(!grouped[key])grouped[key]={name:i.name,ig:i.ig,acc:i.acc,records:[]};grouped[key].records.push(i);});
+  let results=Object.values(grouped);
+  if(q)results=results.filter(g=>g.name&&g.name.toLowerCase().includes(q.toLowerCase()));
+  if(sf!=='all')results=results.filter(g=>g.records.some(r=>r.status===sf));
+
+  area.innerHTML=`<div style="animation:fadeIn .18s ease">
+    <div class="page-title">Find influencer</div>
+    <div class="page-sub">Search across all months</div>
+    <div style="display:flex;gap:9px;margin-bottom:16px;">
+      <input class="search-in" id="gs" style="flex:1;padding:9px 13px;" placeholder="Search by name..." value="${esc(q)}" oninput="renderSearchView(this.value,document.getElementById('sf').value)">
+      <select id="sf" class="fi" style="border:1px solid var(--border-md);border-radius:var(--rs);padding:8px 12px;font-size:13px;background:var(--surface);cursor:pointer;" onchange="renderSearchView(document.getElementById('gs').value,this.value)">
+        <option value="all" ${sf==='all'?'selected':''}>All status</option>
+        <option value="Off" ${sf==='Off'?'selected':''}>Off</option>
+        <option value="Replying" ${sf==='Replying'?'selected':''}>Replying</option>
+        <option value="Pending" ${sf==='Pending'?'selected':''}>Pending</option>
+        <option value="Done" ${sf==='Done'?'selected':''}>Done</option>
+      </select>
+    </div>
+    ${results.length===0?`<div style="text-align:center;padding:40px;color:var(--faint);font-size:14px;">No influencers found</div>`:
+      results.map(g=>{
+        const recs=sf==='all'?g.records:g.records.filter(r=>r.status===sf);
+        if(!recs.length)return'';
+        return`<div class="cross-card">
+          <div class="cross-head"><div class="cross-name">${g.name||'<i style="color:var(--faint)">Unnamed</i>'}</div><div class="cross-handle">${g.ig?'@'+g.ig:g.acc||''}</div></div>
+          ${recs.map(r=>`<div class="cross-row" onclick="goToInf('${r.monthId}','${r.id}')">
+            <span class="cross-mbadge">${r.monthName}</span>
+            <span class="cross-info"><span class="sp sp-${r.status}" style="margin-right:6px;">${r.status}</span>${totalRM(r)>0?'RM '+totalRM(r).toLocaleString():''}${r.deliveryDate?' · 📦 '+fmtDate(r.deliveryDate):''}</span>
+            <span class="cross-go">→</span>
+          </div>`).join('')}
+        </div>`;
+      }).join('')}
+  </div>`;
+}
+function goToInf(monthId,infId){
+  curMonth=monthId;curInf=infId;
+  setNav('');['overview','search'].forEach(k=>document.getElementById('nav-'+k).classList.remove('active'));
+  renderMonthList();
+  const m=getM(monthId);
+  document.getElementById('add-btn').disabled=false;
+  document.getElementById('inf-lbl').textContent=m.name;
+  document.getElementById('search-box').value='';
+  renderInfList('');renderDetail();
+}
+
+/* ── DETAIL ── */
+function renderDetail(){
+  const inf=getI(curMonth,curInf);if(!inf)return;
+  const m=getM(curMonth);
+  document.getElementById('empty-state').style.display='none';
+  const area=document.getElementById('content-area');area.style.display='block';
+
+  area.innerHTML=`<div class="detail-view">
+    <span class="month-badge">📅 ${m.name}</span>
+    <div class="d-name" id="dn">${inf.name||'<span style="color:var(--faint);font-style:italic;">New influencer</span>'}</div>
+    <div class="d-handle" id="dh">${inf.ig?'@'+esc(inf.ig):''}</div>
+
+    <!-- Status -->
+    <div style="margin:14px 0;">
+      <div class="fl" style="margin-bottom:8px;">Collaboration Status</div>
+      <div class="st-row">${['Off','Replying','Pending','Done'].map(s=>`<button class="st-btn${inf.status===s?' sel-'+s:''}" id="sb-${s}" onclick="updSt('${s}')">${SL[s]}</button>`).join('')}</div>
+    </div>
+
+    <!-- Basic info -->
+    <div class="card">
+      <div class="card-head"><div class="card-title">Basic Info</div></div>
+      <div class="card-body">
+        <div class="grid2">
+          <div class="fc"><div class="fl">Full Name</div><input class="fi" value="${esc(inf.name)}" placeholder="Influencer name" oninput="upd('name',this.value)"></div>
+          <div class="fc"><div class="fl">XHS / IG Account</div>
+            <input class="fi" id="acc-input" value="${esc(inf.acc)}" placeholder="https://www.xiaohongshu.com/user/..." oninput="upd('acc',this.value);updateAccLink(this.value)">
+            ${inf.acc&&(inf.acc.startsWith('http://')||inf.acc.startsWith('https://'))?`<div style="margin-top:4px;"><a href="${esc(inf.acc)}" target="_blank" rel="noopener" style="font-size:11px;color:var(--green-d);text-decoration:none;display:inline-flex;align-items:center;gap:3px;">🔗 打开链接 ↗</a></div>`:'<div id="acc-link-hint" style="margin-top:4px;font-size:11px;color:var(--faint);min-height:16px;"></div>'}
+          </div>
+          <div class="fc"><div class="fl">IG Username</div><input class="fi" value="${esc(inf.ig)}" placeholder="e.g. butterkate_" oninput="upd('ig',this.value)"></div>
+          <div class="fc"><div class="fl">Phone Number</div><input class="fi" value="${esc(inf.phone)}" placeholder="019-xxx xxxx" oninput="upd('phone',this.value)"></div>
+          <div class="fc"><div class="fl">Brand</div><select class="fi" onchange="upd('brand',this.value)"><option value="" ${!inf.brand?'selected':''}>Select brand...</option><option ${inf.brand==='Keto Cake'?'selected':''}>Keto Cake</option><option ${inf.brand==='CakeTella'?'selected':''}>CakeTella</option><option ${inf.brand==='Both'?'selected':''}>Both</option></select></div>
+          <div class="fc"><div class="fl">Platform</div><select class="fi" onchange="upd('platform',this.value)"><option value="" ${!inf.platform?'selected':''}>Select platform...</option><option ${inf.platform==='小红书 (XHS)'?'selected':''}>小红书 (XHS)</option><option ${inf.platform==='Instagram'?'selected':''}>Instagram</option><option ${inf.platform==='Both'?'selected':''}>Both</option></select></div>
+        </div>
+        <div class="fc"><div class="fl">Mailing Address</div><input class="fi" value="${esc(inf.address)}" placeholder="For product delivery..." oninput="upd('address',this.value)"></div>
+        <div class="fc"><div class="fl">IC Number</div><input class="fi" value="${esc(inf.ic)}" placeholder="For contract / tax purposes" oninput="upd('ic',this.value)"></div>
+      </div>
+    </div>
+
+    <!-- Rates -->
+    <div class="card">
+      <div class="card-head"><div class="card-title">💰 Rates</div></div>
+      <div class="card-body">
+        <div class="grid2">
+          <div class="fc amber"><div class="fl">Photo Rate</div><input class="fi fi-big" type="number" value="${esc(inf.photo)}" placeholder="0" oninput="upd('photo',this.value)"><div class="fi-sub">RM</div></div>
+          <div class="fc amber"><div class="fl">Video Rate</div><input class="fi fi-big" type="number" value="${esc(inf.video)}" placeholder="0" oninput="upd('video',this.value)"><div class="fi-sub">RM</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Products -->
+    <div class="card">
+      <div class="card-head"><div class="card-title">🎁 Products to send</div></div>
+      <div class="card-body">
+        <div class="product-wrap" id="prod-wrap">${(inf.products||[]).map((p,i)=>`<span class="prod-tag">${esc(p)}<button onclick="removeProd(${i})">×</button></span>`).join('')}</div>
+        <div class="prod-add">
+          <input class="prod-input" id="prod-input" placeholder="e.g. Matcha Keto Cake 6 inch" onkeydown="if(event.key==='Enter')addProd()">
+          <button class="prod-btn" onclick="addProd()">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delivery -->
+    <div class="card">
+      <div class="card-head"><div class="card-title">📦 Delivery</div></div>
+      <div class="card-body">
+        <div class="grid2">
+          <div class="fc"><div class="fl">Delivery Date</div><input class="fi" type="date" value="${esc(inf.deliveryDate)}" oninput="upd('deliveryDate',this.value)"></div>
+          <div class="fc"><div class="fl">Time Slot</div><select class="fi" id="delivery-time-select" onchange="upd('deliveryTime',this.value)">${slotOpts(inf.brand,inf.deliveryTime)}</select></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Posting -->
+    <div class="card">
+      <div class="card-head"><div class="card-title">📸 Posting</div></div>
+      <div class="card-body">
+        <div class="grid3">
+          <div class="fc"><div class="fl">Posting Date</div><input class="fi" type="date" value="${esc(inf.postingDate)}" oninput="upd('postingDate',this.value)"></div>
+          <div class="fc"><div class="fl">No. of Posts</div><input class="fi" type="number" min="0" value="${esc(inf.posts)}" placeholder="0" oninput="upd('posts',this.value)"></div>
+          <div class="fc"><div class="fl">No. of Stories</div><input class="fi" type="number" min="0" value="${esc(inf.stories)}" placeholder="0" oninput="upd('stories',this.value)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Remarks -->
+    <div class="card">
+      <div class="card-head"><div class="card-title">Remarks</div></div>
+      <div class="card-body">
+        <textarea class="fi" rows="3" style="resize:none;line-height:1.6;" placeholder="Notes, follow-up reminders..." oninput="upd('remarks',this.value)">${esc(inf.remarks)}</textarea>
+      </div>
+    </div>
+  </div>`;
+}
+
+function upd(f,v){
+  const inf=getI(curMonth,curInf);if(!inf)return;
+  inf[f]=v;save();
+  if(f==='name'){const e=document.getElementById('dn');if(e)e.innerHTML=v||'<span style="color:var(--faint);font-style:italic;">New influencer</span>';renderInfList(document.getElementById('search-box').value);}
+  if(f==='ig'){const e=document.getElementById('dh');if(e)e.textContent=v?'@'+v:'';}
+  if(f==='status'||f==='photo'||f==='video')renderInfList(document.getElementById('search-box').value);
+  if(f==='brand'){inf.deliveryTime='';save();const sel=document.getElementById('delivery-time-select');if(sel)sel.innerHTML=slotOpts(v,'');}
+}
+
+function updateAccLink(val) {
+  const hint = document.getElementById('acc-link-hint');
+  if (!hint) return;
+  if (val && (val.startsWith('http://') || val.startsWith('https://'))) {
+    hint.innerHTML = `<a href="${val.replace(/"/g,'&quot;')}" target="_blank" rel="noopener" style="color:var(--green-d);text-decoration:none;display:inline-flex;align-items:center;gap:3px;">🔗 打开链接 ↗</a>`;
+  } else {
+    hint.innerHTML = '';
+  }
+}
+function updSt(s){
+  const inf=getI(curMonth,curInf);if(!inf)return;
+  inf.status=s;save();
+  ['Off','Replying','Pending','Done'].forEach(k=>{const b=document.getElementById('sb-'+k);if(b)b.className='st-btn'+(k===s?' sel-'+k:'');});
+  renderInfList(document.getElementById('search-box').value);
+}
+function addProd(){
+  const input=document.getElementById('prod-input');
+  const val=input.value.trim();if(!val)return;
+  const inf=getI(curMonth,curInf);if(!inf)return;
+  if(!inf.products)inf.products=[];
+  inf.products.push(val);save();input.value='';
+  const wrap=document.getElementById('prod-wrap');
+  if(wrap)wrap.innerHTML=inf.products.map((p,i)=>`<span class="prod-tag">${esc(p)}<button onclick="removeProd(${i})">×</button></span>`).join('');
+}
+function removeProd(idx){
+  const inf=getI(curMonth,curInf);if(!inf||!inf.products)return;
+  inf.products.splice(idx,1);save();
+  const wrap=document.getElementById('prod-wrap');
+  if(wrap)wrap.innerHTML=inf.products.map((p,i)=>`<span class="prod-tag">${esc(p)}<button onclick="removeProd(${i})">×</button></span>`).join('');
+}
+
+// Firebase init handled by module script below
+
+// Expose db to Firebase module
+window._trackerLocalDb = db;
+// Expose cursor state for Firebase sync
+Object.defineProperty(window, '_trackerCurInf', { get: () => curInf });
+Object.defineProperty(window, '_trackerCurMonth', { get: () => curMonth });
+
+// Queue for save calls before Firebase is ready
+window._trackerSaveQueue = false;
+window._trackerReady = false;
+// Override save to queue if Firebase not ready yet
+const _origSave = save;
+window._queuedSave = function() {
+  if (window._trackerReady) {
+    _origSave();
+  } else {
+    window._trackerSaveQueue = true;
+    console.log('Firebase not ready yet, save queued.');
+  }
+};
+
+// Sync status UI
+function showTrackerSync(state) {
+  const bar = document.getElementById('tracker-sync-bar');
+  if (!bar) return;
+  if (state === 'saving') {
+    bar.textContent = '💾 同步中...';
+    bar.style.background = '#EF9F27';
+    bar.style.color = '#fff';
+    bar.style.display = 'flex';
+    setTimeout(() => bar.style.display = 'none', 2000);
+  } else if (state === 'synced') {
+    bar.textContent = '✅ 已同步';
+    bar.style.background = '#1D9E75';
+    bar.style.color = '#fff';
+    bar.style.display = 'flex';
+    setTimeout(() => bar.style.display = 'none', 2000);
+  }
+}
+</script>
+
+<script type="module">
+  import { initializeApp as initTrackerApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase as getTrackerDB, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAA3Q26HX7d3tEMMwxKhwnf3ii81WCVJHc",
+    authDomain: "kol-influencers.firebaseapp.com",
+    projectId: "kol-influencers",
+    storageBucket: "kol-influencers.firebasestorage.app",
+    messagingSenderId: "661420236899",
+    appId: "1:661420236899:web:cfcd20b53a07db587c9856",
+    databaseURL: "https://kol-influencers-default-rtdb.firebaseio.com"
+  };
+
+  // Reuse existing Firebase app (campaign module may have already initialized it)
+  const existingApps = getApps();
+  const app = existingApps.length > 0 ? existingApps[0] : initTrackerApp(firebaseConfig);
+  const db = getTrackerDB(app);
+
+  // Expose to tracker script (non-module)
+  window._trackerDb = db;
+  window._trackerFirebase = { ref, set };
+  window._trackerReady = true;
+
+  // If a save was queued while Firebase was initializing, flush it now
+  if (window._trackerSaveQueue) {
+    window._trackerSaveQueue = false;
+    set(ref(db, 'tracker_db'), window._trackerLocalDb).catch(e => console.error('Queued save error:', e));
+  }
+
+  // Listen for real-time changes from Firebase
+  onValue(ref(db, 'tracker_db'), (snapshot) => {
+    if (snapshot.exists()) {
+      const remoteData = snapshot.val();
+      // Firebase can convert arrays to objects with numeric keys — normalize back to array
+      function toArray(val) {
+        if (!val) return [];
+        if (Array.isArray(val)) return val;
+        // Firebase object with numeric keys → convert to array, filter nulls
+        return Object.values(val).filter(Boolean);
+      }
+      if (remoteData) {
+        const months = toArray(remoteData.months).map(m => ({
+          ...m,
+          influencers: toArray(m.influencers)
+        }));
+        window._trackerLocalDb.months = months;
+      } else {
+        window._trackerLocalDb.months = [];
+      }
+      // Re-render current view
+      if (typeof renderMonthList === 'function') {
+        renderMonthList();
+        if (window._trackerCurInf && window._trackerCurMonth) {
+          if (typeof renderDetail === 'function') renderDetail();
+        } else if (typeof showOverview === 'function') {
+          showOverview();
+        }
+        showTrackerSync('synced');
+      }
+    } else {
+      // No data yet in Firebase — initialize empty and render
+      window._trackerLocalDb.months = [];
+      if (typeof renderMonthList === 'function') renderMonthList();
+      if (typeof showOverview === 'function') showOverview();
+    }
+  });
+
+  console.log('Tracker Firebase connected');
+</script>
+
+<!-- Campaign Firebase Script -->
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAA3Q26HX7d3tEMMwxKhwnf3ii81WCVJHc",
+    authDomain: "kol-influencers.firebaseapp.com",
+    projectId: "kol-influencers",
+    storageBucket: "kol-influencers.firebasestorage.app",
+    messagingSenderId: "661420236899",
+    appId: "1:661420236899:web:cfcd20b53a07db587c9856",
+    databaseURL: "https://kol-influencers-default-rtdb.firebaseio.com"
+  };
+
+  const existingApps = getApps();
+  const app = existingApps.length > 0 ? existingApps[0] : initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  window._firebaseApp = app;
+
+  let editMode = false;
+  let activeBrand = 'keto';
+  let isSyncing = false; // prevent loop when applying remote changes
+
+  // ── COLLECT ALL CONTENT ──
+  function collectContent() {
+    const data = {};
+    document.querySelectorAll('.bubble[id], .form-val[id], .card-title[id], .card-label[id]').forEach(el => {
+      if (el.id) data[el.id] = el.innerHTML;
+    });
+    // Also collect by data-sync attribute
+    document.querySelectorAll('[data-sync]').forEach(el => {
+      data[el.getAttribute('data-sync')] = el.innerHTML;
+    });
+    return data;
+  }
+
+  // ── APPLY CONTENT FROM FIREBASE ──
+  function applyContent(data) {
+    isSyncing = true;
+    document.querySelectorAll('[data-sync]').forEach(el => {
+      const key = el.getAttribute('data-sync');
+      if (data[key] !== undefined) el.innerHTML = data[key];
+    });
+    isSyncing = false;
+  }
+
+  // ── SAVE TO FIREBASE ──
+  function saveToFirebase() {
+    if (isSyncing) return;
+    const data = {};
+    document.querySelectorAll('[data-sync]').forEach(el => {
+      data[el.getAttribute('data-sync')] = el.innerHTML;
+    });
+    set(ref(db, 'manual_content'), data);
+  }
+
+  // ── LISTEN FOR CHANGES (realtime sync) ──
+  onValue(ref(db, 'manual_content'), (snapshot) => {
+    if (snapshot.exists() && !editMode) {
+      applyContent(snapshot.val());
+    }
+  });
+
+  // ── SHOW SYNC STATUS ──
+  function showSyncStatus(msg, color) {
+    let bar = document.getElementById('sync-bar');
+    bar.textContent = msg;
+    bar.style.background = color || '#E1F5EE';
+    bar.style.color = color ? '#fff' : '#0F6E56';
+    bar.style.display = 'flex';
+    setTimeout(() => bar.style.display = 'none', 3000);
+  }
+
+  // ── TOGGLE EDIT ──
+  window.toggleEdit = function() {
+    editMode = !editMode;
+    const btn = document.getElementById('editBtn');
+    const hint = document.getElementById('editHint');
+    document.body.className = editMode
+      ? 'edit-on ' + (activeBrand === 'keto' ? 'keto-active' : 'cake-active')
+      : (activeBrand === 'keto' ? 'keto-active' : 'cake-active');
+
+    document.querySelectorAll('[data-sync]').forEach(el => {
+      el.contentEditable = editMode ? 'true' : 'false';
+    });
+
+    // Add edit styles
+    const styleId = 'edit-mode-style';
+    if (!document.getElementById(styleId)) {
+      const s = document.createElement('style');
+      s.id = styleId;
+      s.textContent = `
+        body.edit-on [data-sync][contenteditable="true"] {
+          outline: none !important; border: 1.5px dashed rgba(150,150,200,0.7) !important;
+          border-radius: 6px; padding: 2px 6px; margin: -2px -6px;
+          cursor: text; background: #FAFAFA;
+        }
+        body.edit-on [data-sync][contenteditable="true"]:focus {
+          border-color: #9999CC !important; background: white !important;
+          box-shadow: 0 0 0 3px rgba(150,150,200,0.12);
+        }
+        body.edit-on .bubble[data-sync][contenteditable="true"] { display: block; }
+        body.edit-on .sec-title[data-sync][contenteditable="true"] { display: flex; }
+        body.edit-on .logo[data-sync][contenteditable="true"] { display: block; }
+      `;
+      document.head.appendChild(s);
+    }
+
+    if (!editMode) {
+      // Save when closing edit mode
+      saveToFirebase();
+      showSyncStatus('✅ 已保存并同步给所有人！', '#1D9E75');
+    } else {
+      showSyncStatus('✏️ 编辑模式 — 改完记得按「关闭编辑」来同步', '#EF9F27');
+    }
+
+    btn.textContent = editMode ? '关闭编辑' : '开启编辑';
+    btn.className = editMode ? 'edit-toggle on' : 'edit-toggle';
+    hint.style.display = editMode ? 'inline' : 'none';
+  }
+
+  window.switchBrand = function(brand) {
+    activeBrand = brand;
+    document.getElementById('keto-page').classList.toggle('active', brand === 'keto');
+    document.getElementById('cake-page').classList.toggle('active', brand === 'cake');
+    document.getElementById('tab-keto').className = 'brand-tab' + (brand === 'keto' ? ' active-keto' : '');
+    document.getElementById('tab-cake').className = 'brand-tab' + (brand === 'cake' ? ' active-cake' : '');
+    document.body.className = editMode
+      ? 'edit-on ' + (brand === 'keto' ? 'keto-active' : 'cake-active')
+      : (brand === 'keto' ? 'keto-active' : 'cake-active');
+  }
+
+  window.showSection = function(brand, sec) {
+    const page = document.getElementById(brand + '-page');
+    page.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+    page.querySelectorAll('.sec-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(brand + '-' + sec).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  window.copyScript = function(id, btn) {
+    const el = document.getElementById(id);
+    const text = [...el.querySelectorAll('.bubble')].map(b => b.innerText.trim()).join('\n\n');
+    copyToClipboard(text, btn);
+  }
+
+  window.copyDelivery = function(id, btn) {
+    const text = document.getElementById(id).innerText.trim();
+    copyToClipboard(text, btn);
+  }
+
+  function copyToClipboard(text, btn) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.classList.add('copied');
+      btn.textContent = '✅ 已复制！';
+      setTimeout(() => { btn.classList.remove('copied'); btn.textContent = orig; }, 2000);
+    });
+  }
+
+  document.body.className = 'keto-active';
+</script>
+
+</body>
+</html>
